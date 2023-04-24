@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#btn-save:hover svg path,
+#btn-save:hover {
+    fill: black;
+}
+
+#btn-cart:hover svg path,
+#btn-cart:hover {
+    fill: white;
+}
