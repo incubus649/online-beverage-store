@@ -3,10 +3,17 @@
 @section('content')
 
 <div class="">
-    <h1 class="text-3xl font-bold">Listings</h1>
-    <ul>
+    @foreach ($categories as $category)
+        <div class="">
+            <a href=" {{ route('category', [$category]) }}"> {{ $category->name }} </a>
 
-    </ul>
+            @foreach ($category->children as $child)
+                <div class="ml-8">
+                    <a href=" {{ route('category', [$category, $child]) }} "> {{ $child->name }} </a>
+                </div>
+            @endforeach
+        </div>
+    @endforeach
 </div>
 
 @include('partials._hero')
