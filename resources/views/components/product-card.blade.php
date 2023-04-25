@@ -16,10 +16,10 @@
         <span class="inline">
             <ul>
                 <li>
-                    <p></p>
+                    <p>test</p>
                 </li>
                 <li>
-                    <p>a</p>
+                    <p>test</p>
                 </li>
             </ul>
         </span>

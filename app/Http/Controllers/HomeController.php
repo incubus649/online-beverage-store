@@ -11,9 +11,9 @@ class HomeController extends Controller
     public function index() 
     {
         // show products on home page
-        $products = Product::with('categories.parent')
+        $products = Product::with('categories')
             ->latest()
-            ->take(9)
+            ->take(20)
             ->get();
 
         return view('index', compact('products'));
@@ -23,75 +23,71 @@ class HomeController extends Controller
     {
         // show products with certain category
 
-        /*
         $products = null;
-        $ids = collect();
-        $selected_categories = [];
 
         if ($child) {
-            $sub_category = $child->children()->where('slug', $child)->firstOrFail();
-            $ids = collect($sub_category->id);
-            $selected_categories = [$category->id, $child->id, $sub_category->id];
-        } elseif ($category) {
-            $category->load('children.children');
-            $ids = collect();
-            $selected_categories[] = $category->id;
+            // i dont know another way to make it work
+            // array of child id (it is just one int)
+            $category_child = Category::where('id', $child->id)->pluck('id');
 
-            foreach ($category->children as $sub_category) {
-                $ids = $ids->merge($sub_category->children->pluck('id'));
-            }
+            // products under children
+            $products = Product::whereHas('categories', function($query) use ($category_child) {
+                $query->whereIn('category_id', $category_child);
+            })
+            ->with('categories.parent')
+            ->paginate(20);
+
+        } else if ($category) {
+            // children of parent category
+            $category_child = Category::where('parent_id', $category->id)->pluck('id');
+
+            // products under children
+            $products = Product::whereHas('categories', function($query) use ($category_child) {
+                $query->whereIn('category_id', $category_child);
+            })
+            ->with('categories.parent')
+            ->paginate(20);
+
         }
 
-        $products = Product::whereHas('categories', function ($query) use ($ids) {
-                $query->whereIn('id', $ids);
+
+        
+        // show products with certain category
+
+        /*
+        if ($child) {
+            $products = Product::with('categories')
+            ->latest()
+            ->take(20)
+            ->get();
+
+        return view('index', compact('products'));
+        } else if ($category) {
+            $category_slug_id = Category::where('slug', function($query) use ($category) {
+                $query->whereIn('slug', $category::with('categories.children')->pluck('slug'));
+            })
+                ->with('products.children')
+                ->pluck('id');
+            dd($category_slug_id);
+            
+            $category_child = Category::where('parent_id', $category_slug_id)->pluck('id');
+            //dd($category_child);
+
+            $products = Product::whereHas('categories', function($query) use ($category_child) {
+                $query->whereIn('category_id', $category_child);
             })
             ->with('categories.parent')
             ->paginate(9);
-
-        return view('index', compact('products', 'selected_categories'));
-
+        }
         */
- 
-        // id of categories
-        $ids = collect();
-
-        // if child exists
-        if ($child) {
-            $id =  $child->children->pluck('id'); 
-            dd($id);
-        } else if ($category) { // if category exists
-            echo('hi');
-        }   
-
-        $products = Product::with('categories')->whereHas('categories', function ($query) use ($ids) {
-            $query->whereIn('id', $ids);
-        });
-        
-
 
         return view('index', compact('products'));
     }
 
-    public function product($category, $child, $product_slug, Product $product)
+    public function product($category, $child, Product $product)
     {
         
         // show one product
 
-        
-
-        $product->load('categories.parent');
-        $child = $product->children->where('slug', $child)->first();
-        $selectedCategories = [];
-
-        if ($child &&
-            $child->parentCategory
-        ) {
-            $selectedCategories = [
-                $child->parentCategory->id ?? null,
-                $child->id
-            ];
-        }
-
-        return view('product', compact('product', 'selectedCategories'));
     }
 }
