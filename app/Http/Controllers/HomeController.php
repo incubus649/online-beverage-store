@@ -13,6 +13,7 @@ class HomeController extends Controller
         // show products on home page
         $categories = Category::whereNull('parent_id')
             ->get();
+            
         $products = Product::with('categories.parent')
             ->latest()
             ->paginate(20);
@@ -56,10 +57,13 @@ class HomeController extends Controller
         return view('index', compact('products', 'categories'));
     }
 
-    public function product($category, $child, Product $product)
+    public function product($category, $child, $product_slug, Product $product)
     {
         
         // show one product
+        $product->load('categories.parent');
+
+        return view('product', compact('product'));
 
     }
 }

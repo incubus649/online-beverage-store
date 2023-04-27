@@ -25,7 +25,7 @@ Route::get('/{category:slug}/{child:slug?}', [HomeController::class, 'category']
     ->name('category');
 
 // single product
-Route::get('/{category}/{child}/{product}', [HomeController::class, 'product'])
+Route::get('/{category}/{child}/{productSlug}/{product}', [HomeController::class, 'product'])
     ->name('product');
 
 

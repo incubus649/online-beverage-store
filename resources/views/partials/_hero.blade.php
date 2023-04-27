@@ -1,1 +1,1 @@
-<h1>FEATURED</h1>
+HERO TEXT

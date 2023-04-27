@@ -2,7 +2,12 @@
 
 <div class="group hover:drop-shadow-md">
     <a
-    href="#">
+    href="{{ route('product', [
+        $product->categories->first()->parent->slug,
+        $product->categories->first()->slug,
+        $product->slug,
+        $product
+      ]) }}">
 
         <!-- image -->
         <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 text-white">
@@ -13,13 +18,14 @@
         <h3 class="mt-4 text-md text-gray-700 truncate">{{$product->name}}</h3>
 
         <!-- subcategory and tags -->
-        <span class="inline">
+        <span class="flex-inline">
             <ul>
                 <li>
-                    <p>test</p>
-                </li>
-                <li>
-                    <p>test</p>
+                    <p>
+                        {{ $product->size }}L, 
+                        {{ $product->alcohol_vlm }}%, 
+                        ${{ number_format($product->price / $product->size, 2) }} / L
+                    </p>
                 </li>
             </ul>
         </span>
