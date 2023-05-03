@@ -20,12 +20,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
 
+Route::get('/alcohol', [HomeController::class, 'listings'])
+    ->name('listings');
+
 // categories product
-Route::get('/{category:slug}/{child:slug?}', [HomeController::class, 'category'])
+Route::get('alcohol/{category:slug}/{child:slug?}', [HomeController::class, 'category'])
     ->name('category');
 
 // single product
-Route::get('/{category}/{child}/{productSlug}/{product}', [HomeController::class, 'product'])
+Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [HomeController::class, 'product'])
     ->name('product');
 
 

@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="">
+    <a href="{{ route('listings') }}">Alcohol</a>
     @foreach ($categories as $category)
         <div class="">
             <a href=" {{ route('category', [$category]) }}"> {{ $category->name }} </a>
@@ -16,7 +17,7 @@
     @endforeach
 </div>
 
-@include('partials._hero')
+@include('partials._search')
 
 <div class="bg-gray-100">
     <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8"> 

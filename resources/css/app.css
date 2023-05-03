@@ -2,12 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-#btn-save:hover svg path,
-#btn-save:hover {
-    fill: black;
-}
+path { transition: fill .2s ease; }
+#fillBlack       path { fill: white; }
+#fillBlack:hover path { fill: black; }
 
-#btn-cart:hover svg path,
-#btn-cart:hover {
-    fill: white;
-}
+#fillWhite       path { fill: black; }
+#fillWhite:hover path { fill: white; }

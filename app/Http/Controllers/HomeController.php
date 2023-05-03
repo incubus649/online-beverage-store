@@ -18,7 +18,21 @@ class HomeController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('index', compact('products', 'categories'));
+        return view('home.index', compact('products', 'categories'));
+    }
+
+    public function listings() 
+    {
+        // show products on home page
+        $categories = Category::whereNull('parent_id')
+            ->get();
+            
+        $products = Product::with('categories.parent')
+            ->latest()
+            ->filter(request(['search']))
+            ->paginate(20);
+
+        return view('products.index', compact('products', 'categories'));
     }
 
     public function category(Category $category, Category $child = null)
@@ -54,7 +68,7 @@ class HomeController extends Controller
 
         }
 
-        return view('index', compact('products', 'categories'));
+        return view('products.index', compact('products', 'categories'));
     }
 
     public function product($category, $child, $product_slug, Product $product)
@@ -63,7 +77,7 @@ class HomeController extends Controller
         // show one product
         $product->load('categories.parent');
 
-        return view('product', compact('product'));
+        return view('products.show', compact('product'));
 
     }
 }
