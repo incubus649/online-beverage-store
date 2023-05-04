@@ -27,6 +27,22 @@ class Product extends Model
         if($filters['search'] ?? false) {
             $query->where('name', 'like', '%' . request('search') . '%');
         }
+
+        if ($filters['brand'] ?? false) {
+            $query->where('brand', 'like', '%' . request('brand') . '%');
+        }
+    
+        if ($filters['alcohol_vlm'] ?? false) {
+            $query->where('alcohol_vlm', 'like', '%' . request('alcohol_vlm') . '%');
+        }
+    
+        if ($filters['size'] ?? false) {
+            $query->where('size', 'like', '%' . request('size') . '%');
+        }
+    
+        if ($filters['country'] ?? false) {
+            $query->where('country', 'like', '%' . request('country') . '%');
+        }
     }
     
     public function categories()

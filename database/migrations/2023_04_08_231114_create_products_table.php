@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('slug')->nullable()->unique();
             $table->string('brand');
             $table->string('country');
-            $table->string('tags');
             $table->float('price', 11, 2);
             $table->float('size', 11, 2);
             $table->float('alcohol_vlm', 11, 2);
