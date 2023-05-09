@@ -23,13 +23,29 @@ Route::get('/', [HomeController::class, 'index'])
 Route::get('/alcohol', [HomeController::class, 'listings'])
     ->name('listings');
 
+
+// create product form
+Route::get('/alcohol/product/create', [ProductController::class, 'createProduct'])
+    ->name('createProduct');
+
+Route::post('/alcohol', [ProductController::class, 'storeProduct'])
+    ->name('listings');
+
+// single product
+Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'showProduct'])
+    ->name('product');
+
+
+
+// create category form
+Route::get('/alcohol/category/create', [HomeController::class, 'listings'])
+    ->name('createCategory');
+
 // categories product
 Route::get('alcohol/{category:slug}/{child:slug?}', [HomeController::class, 'category'])
     ->name('category');
 
-// single product
-Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [HomeController::class, 'product'])
-    ->name('product');
+
 
 
 

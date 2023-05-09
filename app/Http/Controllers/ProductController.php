@@ -3,12 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
-    public function show(Product $product)
+    public function showProduct($category, $child, $product_slug, Product $product)
     {
-        return view('product', compact('product'));
+        $product->load('categories.parent');
+
+        return view('products.show', compact('product'));
+    }
+
+    public function createProduct()
+    {
+        return view('products.create');
+    }
+
+    public function storeProduct()
+    {
+        $formFields = request()->validate([
+            'name' => ['required', Rule::unique('products', 'name')],
+            'price' => 'required',
+            'brand' => 'required',
+            'alcohol_vlm' => 'required',
+            'stock' => 'required',
+            'country' => 'required',
+            'size' => 'required',
+            'category' => 'required', 
+        ]);
+    
+        // Generate slug from name
+        $formFields['slug'] = Str::slug($formFields['name']);
+    
+        // Save product
+        $product = Product::create($formFields);
+
+        // Retrieve the selected category ID from the form submission
+        $category_id = request('category');
+
+        // Add the relationship between the product and the category to the pivot table
+        $product->categories()->attach($category_id);
+    
+        // Redirect to product details page
+        return redirect('/');
     }
 }

@@ -11,16 +11,8 @@ use Illuminate\Database\Eloquent\Builder;
 class Product extends Model
 {
     use HasFactory;
-    use Sluggable;
 
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
+    protected $fillable = ['name', 'slug', 'brand', 'country', 'price', 'size', 'alcohol_vlm', 'stock'];
 
     public function scopeFilter($query, array $filters)
     {
