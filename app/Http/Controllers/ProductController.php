@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -19,13 +21,15 @@ class ProductController extends Controller
 
     public function createProduct()
     {
-        return view('products.create');
+        $categories=Category::whereNull('parent_id')
+            ->get();
+        return view('products.create', compact('categories'));
     }
 
     public function storeProduct()
     {
         $formFields = request()->validate([
-            'name' => ['required', Rule::unique('products', 'name')],
+            'name' => 'required',
             'price' => 'required',
             'brand' => 'required',
             'alcohol_vlm' => 'required',
@@ -46,8 +50,8 @@ class ProductController extends Controller
 
         // Add the relationship between the product and the category to the pivot table
         $product->categories()->attach($category_id);
-    
+
         // Redirect to product details page
-        return redirect('/');
+        return redirect('/')->with('message', 'Product created successfully!');
     }
 }
