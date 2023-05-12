@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,21 +45,3 @@ Route::get('/alcohol/category/create', [HomeController::class, 'listings'])
 // categories product
 Route::get('alcohol/{category:slug}/{child:slug?}', [HomeController::class, 'category'])
     ->name('category');
-
-
-
-
-
-Route::get('/test', function () {
-
-    $categories = Category::where('parent_id', null)->get();
-
-    $test = $categories->pluck('children')->flatten();
-
-    return view('test', [
-
-        'categories' => $categories,
-        'test' => $test
-    
-    ]);
-});

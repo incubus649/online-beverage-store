@@ -165,16 +165,6 @@
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <!-- product description
-                    <div class="col-span-full">
-                        <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
-                        <div class="mt-2">
-                        <textarea id="description" name="description" rows="5" class="block w-full rounded-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
-                            placeholder="Write a few sentences about your product... (Optional)"></textarea>
-                        </div>
-                    </div>
-                    -->
                 </div>
             </div>
         </div>

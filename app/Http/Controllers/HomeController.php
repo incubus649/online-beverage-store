@@ -18,6 +18,8 @@ class HomeController extends Controller
 
     public function listings() 
     {
+        $categoryName = 'Alcohol';
+
         $categories = Category::whereNull('parent_id')
             ->get();
         $filter = request()->only(['search','brand', 'alcohol_vlm', 'size', 'country']);
@@ -44,15 +46,16 @@ class HomeController extends Controller
             ->groupByRaw('alcohol_vlm')
             ->get();
 
-        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms'));
+        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName'));
     }
 
     public function category(Category $category, Category $child = null)
     {
+        $categoryName = $child ? $child->name : $category->name;
         $categories = Category::whereNull('parent_id')
             ->get();
         $categoryChild = $child ? Category::where('id', $child->id)->pluck('id') : Category::where('parent_id', $category->id)->pluck('id');
-        
+
         $filter = request()->only(['search','brand', 'alcohol_vlm', 'size', 'country']);
         
         $brands = Product::whereHas('categories', function($query) use ($categoryChild) { 
@@ -92,6 +95,6 @@ class HomeController extends Controller
             ->filter($filter)
             ->paginate(20);
 
-        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms'));
+        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName'));
     }
 }

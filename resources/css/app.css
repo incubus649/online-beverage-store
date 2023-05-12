@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-path { transition: fill .2s ease; }
+path { transition: fill .3s ease; }
 #fillBlack       path { fill: white; }
 #fillBlack:hover path { fill: black; }
 
