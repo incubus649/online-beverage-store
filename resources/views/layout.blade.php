@@ -6,7 +6,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         @vite('resources/css/app.css')
         <title>Necromancer Nectar</title>
-        <script src="//unpkg.com/alpinejs" defer></script>
+        <script src="https://unpkg.com/alpinejs" defer></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     </head>
     <x-flash-message/>
     <body >
@@ -29,6 +31,9 @@
                         </li>
                     </ul>
                 </nav>
+                
+
+                
                 <ul class="flex justify-center space-x-12 mr-6 pb-2 text-lg">
                     <div>
                         @include('partials._catalogue')
@@ -46,6 +51,7 @@
                         <a href="{{route('home')}}" class="hover:drop-shadow-md"> For Suppliers</a>
                     </li>
                 </ul>
+                
             </div>
         </header>
 
@@ -53,5 +59,7 @@
 
         {{--VIEW OUTPUT--}}
         @yield('content')
+
+        @yield('scripts')
     </body>
 </html>

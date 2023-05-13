@@ -32,19 +32,27 @@ class HomeController extends Controller
         $brands = Product::filter($filter)
             ->selectRaw('brand, count(brand) as brandcount')
             ->groupByRaw('brand')
+            ->orderBy('brand')
             ->get();
         $countries = Product::filter($filter)
             ->selectRaw('country, count(country) as countrycount')
             ->groupByRaw('country')
+            ->orderBy('country')
             ->get();
         $sizes = Product::filter($filter)
             ->selectRaw('size, count(size) as sizecount')
             ->groupByRaw('size')
+            ->orderBy('size')
             ->get();
         $alcohol_vlms = Product::filter($filter)
             ->selectRaw('alcohol_vlm, count(alcohol_vlm) as alcohol_vlmcount')
             ->groupByRaw('alcohol_vlm')
+            ->orderBy('alcohol_vlm')
             ->get();
+
+        if (request()->ajax()) {
+            return view('products.index', compact('products'))->render();
+        }
 
         return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName'));
     }
@@ -64,6 +72,7 @@ class HomeController extends Controller
             ->filter($filter)
             ->selectRaw('brand, count(brand) as brandcount')
             ->groupByRaw('brand')
+            ->orderBy('brand')
             ->get();
         $countries = Product::whereHas('categories', function($query) use ($categoryChild) { 
             $query->whereIn('category_id', $categoryChild); 
@@ -71,6 +80,7 @@ class HomeController extends Controller
             ->filter($filter)
             ->selectRaw('country, count(country) as countrycount')
             ->groupByRaw('country')
+            ->orderBy('country')
             ->get();
         $sizes = Product::whereHas('categories', function($query) use ($categoryChild) { 
             $query->whereIn('category_id', $categoryChild); 
@@ -78,6 +88,7 @@ class HomeController extends Controller
             ->filter($filter)
             ->selectRaw('size, count(size) as sizecount')
             ->groupByRaw('size')
+            ->orderBy('size')
             ->get();
         $alcohol_vlms = Product::whereHas('categories', function($query) use ($categoryChild) { 
             $query->whereIn('category_id', $categoryChild); 
@@ -85,6 +96,7 @@ class HomeController extends Controller
             ->filter($filter)
             ->selectRaw('alcohol_vlm, count(alcohol_vlm) as alcohol_vlmcount')
             ->groupByRaw('alcohol_vlm')
+            ->orderBy('alcohol_vlm')
             ->get();
         
         $products = Product::whereHas('categories', function($query) use ($categoryChild) { 
@@ -94,6 +106,10 @@ class HomeController extends Controller
             ->latest()
             ->filter($filter)
             ->paginate(20);
+
+            if (request()->ajax()) {
+                return view('products.index', compact('products'));
+            }
 
         return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName'));
     }

@@ -15,8 +15,10 @@ class ProductController extends Controller
     public function showProduct($category, $child, $product_slug, Product $product)
     {
         $product->load('categories.parent');
+        $categories=Category::whereNull('parent_id')
+            ->get();
 
-        return view('products.show', compact('product'));
+        return view('products.show', compact('product', 'categories'));
     }
 
     public function createProduct()
@@ -53,5 +55,40 @@ class ProductController extends Controller
 
         // Redirect to product details page
         return redirect('/')->with('message', 'Product created successfully!');
+    }
+    
+    public function filter(Request $request)
+    {
+        $query = Product::query();
+        $filters = $request->all();
+
+        foreach ($filters as $filterName => $filterValues) {
+            if (!is_array($filterValues)) {
+                continue;
+            }
+
+            foreach ($filterValues as $filterValue) {
+                switch ($filterName) {
+                    case 'brand':
+                        $query->where('brand', $filterValue);
+                        break;
+                    case 'country':
+                        $query->where('country', $filterValue);
+                        break;
+                    case 'size':
+                        $query->where('size', $filterValue);
+                        break;
+                    case 'alcohol_vlm':
+                        $query->where('alcohol_vlm', $filterValue);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        $products = $query->get();
+
+        return view('partials._product-cards', compact('products'));
     }
 }

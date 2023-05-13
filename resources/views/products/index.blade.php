@@ -248,7 +248,7 @@
           >
             <span class="sr-only">Filters</span>
             <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 01.628.74v2.288a2.25 2.25 0 01-.659 1.59l-4.682 4.683a2.25 2.25 0 00-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 018 18.25v-5.757a2.25 2.25 0 00-.659-1.591L2.659 6.22A2.25 2.25 0 012 4.629V2.34a.75.75 0 01.628-.74z" clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 01.628.74v2.288a2.25 2.25 0 01-.659 1.59l-4.682 4.683a2.25 2.25 0 00-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 018 18.25v-5.757a2.25 2.25 0 00-.659-1.591L2.659 6.22A2.25 2.25 0 012 4.629V2.34a.75.75 0 01.628-.74z" clip-rule="evenodd" />
             </svg>
           </button>
         </div>
@@ -259,21 +259,20 @@
 
         <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
           <!-- Filters -->
-          <form action="{{ url()->current() }}" class="hidden lg:block">
-            <x-product-filter :filters="$brands" filterName="brand" filterTitle="Brand" attribute=""/>
-            <x-product-filter :filters="$countries" filterName="country" filterTitle="Country" attribute=""/>
-            <x-product-filter :filters="$sizes" filterName="size" filterTitle="Size" attribute="L"/>
-            <x-product-filter :filters="$alcohol_vlms" filterName="alcohol_vlm" filterTitle="Alcohol volume" attribute="%"/>
-          </form>
-            <div class="lg:col-span-3"> 
-              <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                      
-                  <!-- show all products -->
-                  @foreach ($products as $product)
-                      <x-product-card :product="$product"/>
-                  @endforeach
-          
-              </div>
+          <div id="product-filters">
+            <form id="product-filter-form" class="hidden lg:block" method="GET">
+              @csrf
+              <x-product-filter :filters="$brands" filterName="brand" filterTitle="Brand" attribute=""/>
+              <x-product-filter :filters="$countries" filterName="country" filterTitle="Country" attribute=""/>
+              <x-product-filter :filters="$sizes" filterName="size" filterTitle="Size" attribute="L"/>
+              <x-product-filter :filters="$alcohol_vlms" filterName="alcohol_vlm" filterTitle="Alcohol volume" attribute="%"/>
+            </form>
+          </div>
+            
+          <div class="lg:col-span-3"> 
+            <div id="product-cards-container">
+              @include('partials._product-cards', ['products' => $products])
+            </div>
           </div>
         </div>
       </section>
@@ -281,4 +280,25 @@
   </div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+  // Add event listener to the filter checkboxes
+  document.querySelectorAll('#product-filter-form input[type=checkbox]').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+          // Make an AJAX call to the endpoint with the selected filter values
+          const formData = new FormData(document.querySelector('#product-filter-form'));
+          fetch('/products', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.text())
+          .then(data => {
+              // Replace the product cards container with the new filtered products view
+              document.querySelector('#product-cards-container').innerHTML = data;
+          });
+      });
+  });
+</script>
 @endsection

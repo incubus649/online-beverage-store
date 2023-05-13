@@ -36,6 +36,9 @@ Route::post('/alcohol', [ProductController::class, 'storeProduct'])
 Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'showProduct'])
     ->name('product');
 
+Route::post('/products', [ProductController::class, 'filter'])
+    ->name('products.filter');
+
 
 
 // create category form
