@@ -40,13 +40,13 @@ x-init="init()"
                 </div>
                 @foreach ($categories as $category)
                     <div class="p-4 gap-x-6">
-                        <a href=" {{ route('category', [$category]) }} " class="font-semibold text-gray-900">
+                        <a href=" {{ route('listings', [$category]) }} " class="font-semibold text-gray-900">
                             {{ $category->name }}
                         </a>
                         <ul class="gap-x-6 rounded-sm">
                             @foreach ($category->children as $child)
                                 <li>
-                                    <a href=" {{ route('category', [$category, $child]) }} " class="mt-1 text-gray-600">
+                                    <a href=" {{ route('listings', [$category, $child]) }} " class="mt-1 text-gray-600">
                                         {{ $child->name }}
                                     </a>
                                 </li>

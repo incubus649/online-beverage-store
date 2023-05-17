@@ -5,10 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         @vite('resources/css/app.css')
+        @livewireStyles
         <title>Necromancer Nectar</title>
         <script src="https://unpkg.com/alpinejs" defer></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     </head>
     <x-flash-message/>
     <body >
@@ -51,7 +53,9 @@
                         <a href="{{route('home')}}" class="hover:drop-shadow-md"> For Suppliers</a>
                     </li>
                 </ul>
-                
+                @foreach ($cart = Cart::getContent() as $item)
+                    {{ $item->name }} {{ $item->quantity }}
+                @endforeach
             </div>
         </header>
 
@@ -61,5 +65,6 @@
         @yield('content')
 
         @yield('scripts')
+        @livewireScripts
     </body>
 </html>

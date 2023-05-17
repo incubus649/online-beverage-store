@@ -187,16 +187,10 @@
               x-transition:leave-start="transform opacity-100 scale-100" 
               x-transition:leave-end="transform opacity-0 scale-95" 
               class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none" 
-              x-ref="menu-items" 
               x-description="Dropdown menu, show/hide based on menu state." 
               x-bind:aria-activedescendant="activeDescendant" 
-              role="menu" 
               aria-orientation="vertical" 
               aria-labelledby="menu-button" 
-              tabindex="-1" 
-              @keydown.tab="open = false" 
-              @keydown.enter.prevent="open = false; focusButton()" 
-              @keyup.space.prevent="open = false; focusButton()" 
               style="display: none;"
             >
               <div 
@@ -205,7 +199,7 @@
                 role="none"
               >
                 <a 
-                  href="#" 
+                  href="{{ route('listings', ['sort' => 'newest']) }}" 
                   class="text-gray-500 block px-4 py-2 text-sm"
                   role="menuitem" 
                   tabindex="-1" 
@@ -216,7 +210,7 @@
                   Newest
                 </a>
                 <a 
-                  href="#" 
+                  href="{{ route('listings', ['sort' => 'low-to-high']) }}" 
                   class="text-gray-500 block px-4 py-2 text-sm"
                   role="menuitem" 
                   tabindex="-1" 
@@ -227,7 +221,7 @@
                   Price: Low to High
                 </a>
                 <a 
-                  href="#" 
+                  href="{{ route('listings', ['sort' => 'high-to-low']) }}" 
                   class="text-gray-500 block px-4 py-2 text-sm"
                   role="menuitem" 
                   tabindex="-1" 
@@ -273,6 +267,9 @@
             <div id="product-cards-container">
               @include('partials._product-cards', ['products' => $products])
             </div>
+            <div class="mt-6 p-4">
+              {{ $products->links()}}
+            </div>
           </div>
         </div>
       </section>
@@ -284,21 +281,20 @@
 
 @section('scripts')
 <script>
-  // Add event listener to the filter checkboxes
-  document.querySelectorAll('#product-filter-form input[type=checkbox]').forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-          // Make an AJAX call to the endpoint with the selected filter values
-          const formData = new FormData(document.querySelector('#product-filter-form'));
-          fetch('/products', {
-              method: 'POST',
-              body: formData
-          })
-          .then(response => response.text())
-          .then(data => {
-              // Replace the product cards container with the new filtered products view
-              document.querySelector('#product-cards-container').innerHTML = data;
-          });
+  /*
+  function updateFilter() {
+      // Make an AJAX call to the endpoint with the selected filter and sort values
+      const formData = new FormData(document.querySelector('#product-filter-form'));
+      fetch('/products', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+          // Replace the product cards container with the new filtered products view
+          document.querySelector('#product-cards-container').innerHTML = data;
       });
-  });
+  }
+  */
 </script>
 @endsection
