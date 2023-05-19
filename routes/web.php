@@ -33,5 +33,7 @@ Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [ProductControl
 Route::get('alcohol/{category:slug?}/{child:slug?}', [HomeController::class, 'listings'])
     ->name('listings');
 
-Route::post('/', [CartController::class, 'store'])
+Route::post('/store', [CartController::class, 'store'])
     ->name('cart.store');
+Route::post('/remove', [CartController::class, 'remove'])
+    ->name('cart.remove');

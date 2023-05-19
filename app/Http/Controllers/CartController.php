@@ -2,24 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use Illuminate\Http\Request;
 use Cart;
+use App\Models\Product;
 
 class CartController extends Controller
 {
-    public function store(Request $request) {
-        
-        $product = Product::findOrFail($request->input('product_id'));
+    public function store() {
+        $product = Product::findOrFail(request()->input('product_id'));
 
         Cart::add(
             $product->id, 
             $product->name, 
             $product->price, 
             1, 
-            array()
+            array(
+                'product' => $product,
+                'product_slug' => $product->slug,
+                'category_slug' => $product->categories->first()->slug,
+                'categories' => $product->categories,
+
+                'category' => $product->categories->first()->name
+            )
         );
-        
-        return redirect()->route('listings')->with('message', 'Success!');
+
+        return back();
+    }
+
+    public function remove() {
+        $product = Product::findOrFail(request()->input('product_id'));
+
+        Cart::remove($product->id);
+
+        return back();
     }
 }

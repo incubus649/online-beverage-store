@@ -14,11 +14,13 @@ class ProductController extends Controller
 {
     public function showProduct($category, $child, $product_slug, Product $product)
     {
+        $products = Product::with('categories.parent')->get();
+
         $product->load('categories.parent');
         $categories=Category::whereNull('parent_id')
             ->get();
 
-        return view('products.show', compact('product', 'categories'));
+        return view('products.show', compact('product', 'categories', 'products'));
     }
 
     public function createProduct()
