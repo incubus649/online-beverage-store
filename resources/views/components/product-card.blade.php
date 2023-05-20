@@ -2,7 +2,7 @@
 
 <div class="group hover:drop-shadow-md">
     <a
-    href="{{ route('product', [
+    href="{{ route('product.show', [
         $product->categories->first()->parent->slug,
         $product->categories->first()->slug,
         $product->slug,
@@ -25,7 +25,7 @@
         </span>
 
         <!-- price -->
-        <p class="mt-1 text-lg font-medium text-gray-900">{{ $product->price }}€</p>
+        <p class="mt-1 text-lg font-medium text-gray-900">{{ number_format($product->price, 2) }}€</p>
     </a>
     <!-- add to cart and save for later -->
     <form action="{{ route('cart.store') }}" method="POST">

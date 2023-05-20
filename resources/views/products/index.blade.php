@@ -107,6 +107,7 @@
             <div id="product-cards-container">
               @include('partials._product-cards', ['products' => $products])
             </div>
+            
             <div class="mt-6 p-4">
               {{ $products->links() }}
             </div>

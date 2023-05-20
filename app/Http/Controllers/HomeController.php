@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,15 +13,33 @@ class HomeController extends Controller
     public function index() 
     {
         $categories = Category::whereNull('parent_id')->get();
-        $products = Product::with('categories.parent')->latest()->paginate(20);
+        $products = Product::with('categories.parent')->latest()->paginate(8);
+        $productsAll = Product::all();
 
-        return view('home.index', compact('products', 'categories'));
+        return view('home.index', compact('products', 'categories', 'productsAll'));
+    }
+
+    public function about() 
+    {
+        $categories = Category::whereNull('parent_id')->get();
+        $productsAll = Product::all();
+
+        return view('home.about', compact('categories', 'productsAll'));
+    }
+
+    public function contacts() 
+    {
+        $categories = Category::whereNull('parent_id')->get();
+        $productsAll = Product::all();
+
+        return view('home.contacts', compact('categories', 'productsAll'));
     }
 
     public function listings(Category $category = null, Category $child = null)
     {
         $categories = Category::whereNull('parent_id')
             ->get();
+        $productsAll = Product::all();
         $filter = request()->only(['search','brand', 'alcohol_vlm', 'size', 'country']);
 
         $categoryName = 'Alcohol';
@@ -70,22 +89,22 @@ class HomeController extends Controller
             ->with('categories.parent')
             ->latest()
             ->filter($filter)
-            ->paginate(20);
+            ->paginate(16);
 
         if (request()->sort == 'newest') {
             $products = $products
                 ->latest()
-                ->paginate(20);
+                ->paginate(16);
         } else if (request()->sort == 'high-to-low') {
             $products = $products
                 ->sortByDesc('price')
-                ->paginate(20);
+                ->paginate(16);
         } else if (request()->sort == 'low-to-high') {
             $products = $products
                 ->sortBy('price')
-                ->paginate(20);
+                ->paginate(16);
         }
 
-        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName'));
+        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName', 'productsAll'));
     }
 }

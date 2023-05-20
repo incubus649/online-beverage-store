@@ -12,25 +12,27 @@ use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
-    public function showProduct($category, $child, $product_slug, Product $product)
+    public function show($category, $child, $product_slug, Product $product)
     {
-        $products = Product::with('categories.parent')->get();
+        $productsAll = Product::all();
 
         $product->load('categories.parent');
         $categories=Category::whereNull('parent_id')
             ->get();
 
-        return view('products.show', compact('product', 'categories', 'products'));
+        return view('products.show', compact('product', 'categories', 'productsAll'));
     }
 
-    public function createProduct()
+    public function create()
     {
         $categories=Category::whereNull('parent_id')
             ->get();
-        return view('products.create', compact('categories'));
+        $productsAll = Product::all();
+
+        return view('products.create', compact('categories', 'productsAll'));
     }
 
-    public function storeProduct()
+    public function store()
     {
         $formFields = request()->validate([
             'name' => 'required',

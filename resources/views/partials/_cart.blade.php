@@ -59,9 +59,9 @@
                             <div>
                             <div class="flex justify-between text-base font-medium text-gray-900">
                                 <h3>
-                                    @foreach ($products->where('id', $item->id) as $product)
+                                    @foreach ($productsAll->where('id', $item->id) as $product)
                                         <a 
-                                        href="{{ route('product', [
+                                        href="{{ route('product.show', [
                                             $product->categories->first()->parent->slug,
                                             $product->categories->first()->slug,
                                             $product->slug,
