@@ -44,6 +44,10 @@ class ProductController extends Controller
             'size' => 'required',
             'category' => 'required', 
         ]);
+
+        if(request()->hasFile('image')){
+            $formFields['image'] = request()->file('image')->store('covers', 'public');
+        }
     
         // Generate slug from name
         $formFields['slug'] = Str::slug($formFields['name']);

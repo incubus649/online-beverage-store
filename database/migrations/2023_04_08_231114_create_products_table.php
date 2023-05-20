@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable()->unique();
+            $table->string('image')->nullable(); 
+            $table->longText('description')->nullable();
             $table->string('brand');
             $table->string('country');
             $table->float('price', 11, 2);

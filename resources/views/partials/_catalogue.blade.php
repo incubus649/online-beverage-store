@@ -31,26 +31,28 @@ x-init="init()"
         @click.away="open = false"
     >
         <div class="w-screen lg:max-w-4xl flex-auto overflow-hidden rounded-sm bg-white text-base leading-6 shadow-lg ring-1 ring-gray-900/5">
-            <div class="grid grid-cols-2 p-2">
-                <div class="p-4 gap-x-6">
+            <div class="col-start-2 grid grid-cols-2 gap-x-8">
+                <div class="p-4 gap-x-6 ml-4">
                     <a href=" {{ route('listings') }} " class="font-semibold text-gray-900">
                         Alcohol
                     </a>
                 </div>
                 @foreach ($categories as $category)
-                    <div class="p-4 gap-x-6">
-                        <a href=" {{ route('listings', [$category]) }} " class="font-semibold text-gray-900">
-                            {{ $category->name }}
-                        </a>
-                        <ul class="gap-x-6 rounded-sm">
-                            @foreach ($category->children as $child)
-                                <li>
-                                    <a href=" {{ route('listings', [$category, $child]) }} " class="mt-1 text-gray-600">
-                                        {{ $child->name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                    <div class="row-start-2 grid grid-cols-2 ml-4 gap-y-10 text-sm">
+                        <div class="p-4 gap-x-6">
+                            <a href=" {{ route('listings', [$category]) }} " class="font-semibold text-gray-900">
+                                {{ $category->name }}
+                            </a>
+                            <ul class="rounded-sm mt-6 space-y-5 sm:mt-4 sm:space-y-3" role="list" >
+                                @foreach ($category->children as $child)
+                                    <li>
+                                        <a href=" {{ route('listings', [$category, $child]) }} " class="mt-1 text-gray-600">
+                                            {{ $child->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 @endforeach
             </div>

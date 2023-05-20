@@ -10,8 +10,8 @@
       ]) }}">
 
         <!-- image -->
-        <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 text-white">
-            <img src="{{asset('images/small-logo.png')}}" alt="{{ $product->name }}" class="h-full w-full object-cover object-center group-hover:opacity-90">
+        <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden xl:aspect-h-8 xl:aspect-w-7 text-white">
+            <img src="{{$product->image ? asset('storage/'.$product->image) : asset('/images/small-logo.png')}}" alt="{{ $product->name }}" class="h-full w-full object-cover object-center group-hover:opacity-90">
         </div>
 
         <!-- name -->
