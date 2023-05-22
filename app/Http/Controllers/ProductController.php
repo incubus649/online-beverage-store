@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
+    // Show single product
     public function show($category, $child, $product_slug, Product $product)
     {
         $productsAll = Product::all();
@@ -23,6 +24,7 @@ class ProductController extends Controller
         return view('products.show', compact('product', 'categories', 'productsAll'));
     }
 
+    // Show products with categories
     public function listings(Category $category = null, Category $child = null)
     {
         $categories = Category::whereNull('parent_id')
@@ -104,6 +106,7 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName', 'productsAll'));
     }
 
+    // Show product create form
     public function create()
     {
         $categories=Category::whereNull('parent_id')
@@ -113,6 +116,7 @@ class ProductController extends Controller
         return view('products.create', compact('categories', 'productsAll'));
     }
 
+    // Store product create form
     public function store()
     {
         $formFields = request()->validate([
@@ -150,6 +154,7 @@ class ProductController extends Controller
         return redirect('/')->with('message', 'Product created successfully!');
     }
 
+    // Show product edit form
     public function edit($category, $child, $product_slug, Product $product)
     {
         $product;
@@ -159,6 +164,7 @@ class ProductController extends Controller
         return view('products.edit', compact('categories', 'productsAll', 'product'));
     }
 
+    // Update product edit form
     public function update($category, $child, $product_slug, Product $product)
     {
         $formFields = request()->validate([

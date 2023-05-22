@@ -1,36 +1,20 @@
-<div 
-x-data="{ open: false, focus: false }" 
-x-init="init()" 
-@keydown.escape="onEscape" 
-@close-popover-group.window="onClosePopoverGroup"
-
->
-    <button 
-        type="button" 
-        @mousedown="if (open) $event.preventDefault()" 
-        @click="open = true"
-        class="hover:text-indigo-950 hover:font-semibold hover:drop-shadow-md"
-        aria-expanded="true" 
-        :aria-expanded="open.toString()"
-        href="#"
-    >
+<div x-data="{ open: false, focus: false }" x-init="init()" @keydown.escape="onEscape"
+    @close-popover-group.window="onClosePopoverGroup">
+    <button type="button" @mousedown="if (open) $event.preventDefault()" @click="open = true"
+        class="hover:text-indigo-950 hover:font-semibold hover:drop-shadow-md" aria-expanded="true"
+        :aria-expanded="open.toString()" href="#">
         <span>Catalogue</span>
     </button>
 
-    <div 
-        x-show="open" 
-        x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 translate-y-1" 
-        x-transition:enter-end="opacity-100 translate-y-0" 
-        x-transition:leave="transition ease-in duration-150" 
-        x-transition:leave-start="opacity-100 translate-y-0" 
-        x-transition:leave-end="opacity-0 translate-y-1" 
-        x-description="Flyout menu, show/hide based on flyout menu state." 
-        class="absolute left-1/2 z-10 mt-2 flex w-screen max-w-max -translate-x-1/2 px-4" 
-        style="display: none;"
-        @click.away="open = false"
-    >
-        <div class="w-screen lg:max-w-4xl flex-auto overflow-hidden rounded-sm bg-white text-base leading-6 shadow-lg ring-1 ring-gray-900/5">
+    <div x-show="open" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 translate-y-1"
+        x-description="Flyout menu, show/hide based on flyout menu state."
+        class="absolute left-1/2 z-10 mt-2 flex w-screen max-w-max -translate-x-1/2 px-4" style="display: none;"
+        @click.away="open = false">
+        <div
+            class="w-screen lg:max-w-4xl flex-auto overflow-hidden rounded-sm bg-white text-base leading-6 shadow-lg ring-1 ring-gray-900/5">
             <div class="grid grid-cols-2 p-2">
                 <div class="p-4 gap-x-6">
                     <a href=" {{ route('listings') }} " class="font-semibold text-gray-900">
@@ -57,4 +41,3 @@ x-init="init()"
         </div>
     </div>
 </div>
-

@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\CartController;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 
 /*
@@ -25,6 +26,8 @@ Route::get('/about', [HomeController::class, 'about'])
     ->name('about');
 Route::get('/contacts', [HomeController::class, 'contacts'])
     ->name('contacts');
+Route::get('/suppliers', [HomeController::class, 'suppliers'])
+    ->name('suppliers');
 
 // Product CRUD
 Route::get('/alcohol/product/create', [ProductController::class, 'create'])
@@ -39,9 +42,9 @@ Route::delete('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductCon
     ->name('product.destroy');
 
 // Show products
-Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'show'])
+Route::get('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'show'])
     ->name('product.show');
-Route::get('alcohol/{category:slug?}/{child:slug?}', [ProductController::class, 'listings'])
+Route::get('/alcohol/{category:slug?}/{child:slug?}', [ProductController::class, 'listings'])
     ->name('listings');
 
 // Cart
@@ -49,3 +52,21 @@ Route::post('/store', [CartController::class, 'store'])
     ->name('cart.store');
 Route::post('/remove', [CartController::class, 'remove'])
     ->name('cart.remove');
+
+// User auth/create
+Route::get('/register', [UserController::class, 'create'])
+    ->middleware('guest')
+    ->name('user.create');
+Route::post('/users', [UserController::class, 'store'])
+    ->middleware('guest')
+    ->name('user.store');
+
+Route::get('/login', [UserController::class, 'login'])
+    ->middleware('guest')
+    ->name('user.login');
+Route::post('/users/authenticate', [UserController::class, 'authenticate'])
+    ->middleware('guest')
+    ->name('user.authenticate');
+Route::post('/logout', [UserController::class, 'logout'])
+    ->middleware('auth')
+    ->name('user.logout');
