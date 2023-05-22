@@ -2,12 +2,18 @@
 
 @section('content')
 
-    <form method="POST" action="{{ route('product.store') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('product.update', [
+                                    $product->categories->first()->parent->slug,
+                                    $product->categories->first()->slug,
+                                    $product->slug,
+                                    $product
+                                ]) }}" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
 
         <div class="px-6 py-24 xl:px-96 space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
-                <h1 class="text-lg mb-12 font-semibold leading-7 text-gray-900">Create New Product</h1>
+                <h1 class="text-lg mb-12 font-semibold leading-7 text-gray-900">Edit Product - <span class="font-bold text-black">{{ $product->name }}</span></h1>
                 <h2 class="text-base font-semibold leading-7 text-gray-900">Product General Information</h2>
                 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -36,7 +42,7 @@
                         <div class="mt-2">
                             <div class="flex rounded-sm shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="name" id="name" autocomplete="name" class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" 
-                                    value="{{ old('name') }}" placeholder="Château Palmer, Gaja Barbaresco, Highland Park 25 Yr...">
+                                    value="{{ $product->name }}" placeholder="Château Palmer, Gaja Barbaresco, Highland Park 25 Yr...">
                             </div>
                         </div>
                         @error('name')
@@ -53,17 +59,19 @@
                             </div>
                             <div class="flex rounded-sm shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="price" id="price" class="block flex-1 border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
-                                    value="{{ old('price') }}" placeholder="0.00">
+                                    value="{{ $product->price }}" placeholder="0.00">
                             </div>
                         </div>
                         @error('price')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-        
+                    
+                    <!-- product image -->
                     <div class="col-span-full">
                         <label for="cover" class="block text-sm font-medium leading-6 text-gray-900 pb-8">Product photo</label>
                         <input type="file" id="cover" name="image" class="border border-gray-200 rounded-sm p-2 w-full">
+                        <img src="{{$product->image ? asset('storage/'.$product->image) : asset('/images/small-logo.png')}}" alt="{{ $product->name }}" class="h-64 object-cover">
                         @error('cover')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -83,7 +91,7 @@
                         <div class="mt-2">
                             <div class="flex rounded-sm shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="brand" id="brand" autocomplete="brand" class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" 
-                                    value="{{ old('brand') }}" placeholder="Jim Beam, Coppola, Mondavi...">
+                                    value="{{ $product->brand }}" placeholder="Jim Beam, Coppola, Mondavi...">
                             </div>
                         </div>
                         @error('brand')
@@ -97,7 +105,7 @@
                         <div class="mt-2">
                             <div class="flex rounded-sm shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="country" id="country" autocomplete="country" class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" 
-                                    value="{{ old('country') }}" placeholder="Germany, France, Italy...">
+                                    value="{{ $product->country }}" placeholder="Germany, France, Italy...">
                             </div>
                         </div>
                         @error('country')
@@ -114,7 +122,7 @@
                             </div>
                             <div class="flex-1 rounded-sm shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="alcohol_vlm" id="alcohol_vlm" class="block w-full border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
-                                    value="{{ old('alcohol_vlm') }}" placeholder="0.0">
+                                    value="{{ $product->alcohol_vlm }}" placeholder="0.0">
                             </div>
                         </div>
                         @error('alcohol_vlm')
@@ -131,7 +139,7 @@
                             </div>
                             <div class="flex-1 rounded-sm shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="size" id="size" class="block w-full border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
-                                    value="{{ old('size') }}" placeholder="0.0">
+                                    value="{{ $product->size }}" placeholder="0.0">
                             </div>
                         </div>
                         @error('size')
@@ -145,19 +153,19 @@
                         <div class="mt-2">
                             <div class="flex rounded-sm shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="stock" id="stock" autocomplete="stock" class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" 
-                                    value="{{ old('stock') }}" placeholder="0">
+                                    value="{{ $product->stock }}" placeholder="0">
                             </div>
                         </div>
                         @error('stock')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-
+                    
                     <div class="col-span-full">
                         <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
                         <div class="mt-2">
                             <textarea id="description" name="description" autocomplete="description" rows="3" placeholder="Write a few sentences about your product (Optional)" 
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{{ old('description') }}</textarea>
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{{ $product->description }}</textarea>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@
 
 
 <div 
-x-data="{ open: true }"
+x-data="{ open: false }"
 class="border-b border-gray-200 py-6"
 >
     <h3 class="-my-3 flow-root">

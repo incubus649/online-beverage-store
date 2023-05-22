@@ -25,17 +25,21 @@ Route::get('/about', [HomeController::class, 'about'])
 Route::get('/contacts', [HomeController::class, 'contacts'])
     ->name('contacts');
 
-Route::get('/alcohol', [HomeController::class, 'listings'])
-    ->name('listings');
-
+// Product CRUD
 Route::get('/alcohol/product/create', [ProductController::class, 'create'])
     ->name('product.create');
 Route::post('/alcohol', [ProductController::class, 'store'])
     ->name('product.store');
+Route::get('/alcohol/{category}/{child}/{productSlug}/{product}/edit', [ProductController::class, 'edit'])
+    ->name('product.edit');
+Route::put('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'update'])
+    ->name('product.update');
+Route::delete('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'destroy'])
+    ->name('product.destroy');
+
 
 Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'show'])
     ->name('product.show');
-
 Route::get('alcohol/{category:slug?}/{child:slug?}', [HomeController::class, 'listings'])
     ->name('listings');
 

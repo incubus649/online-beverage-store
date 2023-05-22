@@ -52,7 +52,9 @@
                     @foreach (Cart::getContent() as $item)
                         <li class="flex py-6">
                         <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                            <img src="{{asset('images/small-logo.png')}}" alt="{{ $item->name }}" class="h-full w-full object-cover object-center">
+                          @foreach ($productsAll->where('id', $item->id) as $product)
+                            <img src="{{$product->image ? asset('storage/'.$product->image) : asset('/images/small-logo.png')}}" alt="{{ $product->name }}" class="h-full w-full object-cover object-center">
+                          @endforeach
                         </div>
 
                         <div class="ml-4 flex flex-1 flex-col">
