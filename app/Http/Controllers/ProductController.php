@@ -23,6 +23,87 @@ class ProductController extends Controller
         return view('products.show', compact('product', 'categories', 'productsAll'));
     }
 
+    public function listings(Category $category = null, Category $child = null)
+    {
+        $categories = Category::whereNull('parent_id')
+            ->get();
+        $productsAll = Product::all();
+        $filter = request()->only(['search','brand', 'alcohol_vlm', 'size', 'country']);
+
+        $categoryName = 'Alcohol';
+        $categoryChild = Product::with('categories.parent')->pluck('id');
+
+        if ($category) {
+            $categoryName = $child ? $child->name : $category->name;
+            $categoryChild = $child ? Category::where('id', $child->id)->pluck('id') : Category::where('parent_id', $category->id)->pluck('id');
+        }
+        
+        $brands = Product::whereHas('categories', function($query) use ($categoryChild) { 
+            $query->whereIn('category_id', $categoryChild); 
+        })
+            ->filter($filter)
+            ->selectRaw('brand, count(brand) as brandcount')
+            ->groupByRaw('brand')
+            ->orderBy('brand')
+            ->get();
+        $countries = Product::whereHas('categories', function($query) use ($categoryChild) { 
+            $query->whereIn('category_id', $categoryChild); 
+        })
+            ->filter($filter)
+            ->selectRaw('country, count(country) as countrycount')
+            ->groupByRaw('country')
+            ->orderBy('country')
+            ->get();
+        $sizes = Product::whereHas('categories', function($query) use ($categoryChild) { 
+            $query->whereIn('category_id', $categoryChild); 
+        })
+            ->filter($filter)
+            ->selectRaw('size, count(size) as sizecount')
+            ->groupByRaw('size')
+            ->orderBy('size')
+            ->get();
+        $alcohol_vlms = Product::whereHas('categories', function($query) use ($categoryChild) { 
+            $query->whereIn('category_id', $categoryChild); 
+        })
+            ->filter($filter)
+            ->selectRaw('alcohol_vlm, count(alcohol_vlm) as alcohol_vlmcount')
+            ->groupByRaw('alcohol_vlm')
+            ->orderBy('alcohol_vlm')
+            ->get();
+        
+        if ($category) {
+            $products = Product::whereHas('categories', function($query) use ($categoryChild) { 
+                $query->whereIn('category_id', $categoryChild); 
+            })
+                ->with('categories.parent')
+                ->latest()
+                ->filter($filter)
+                ->paginate(16);
+        } else {
+
+            $products = Product::with('categories.parent')
+                ->latest()
+                ->filter($filter)
+                ->paginate(16);
+        }
+
+        if (request()->sort == 'newest') {
+            $products = $products
+                ->latest()
+                ->paginate(16);
+        } else if (request()->sort == 'high-to-low') {
+            $products = $products
+                ->sortByDesc('price')
+                ->paginate(16);
+        } else if (request()->sort == 'low-to-high') {
+            $products = $products
+                ->sortBy('price')
+                ->paginate(16);
+        }
+
+        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName', 'productsAll'));
+    }
+
     public function create()
     {
         $categories=Category::whereNull('parent_id')
@@ -113,7 +194,7 @@ class ProductController extends Controller
         $product->categories()->attach($category_id);
 
         // Redirect to product details page
-        return back()->with('message', 'Product updated successfully!');
+        return redirect()->route('product.show', [$category, $child, $product->slug, $product->id])->with('message', 'Product updated successfully!');
     }
 
     public function destroy($category, $child, $product_slug, Product $product) {

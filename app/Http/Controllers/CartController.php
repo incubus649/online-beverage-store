@@ -20,12 +20,11 @@ class CartController extends Controller
                 'product_slug' => $product->slug,
                 'category_slug' => $product->categories->first()->slug,
                 'categories' => $product->categories,
-
                 'category' => $product->categories->first()->name
             )
         );
 
-        return back();
+        return back()->with('message', 'Product added to cart!');
     }
 
     public function remove() {
@@ -33,6 +32,6 @@ class CartController extends Controller
 
         Cart::remove($product->id);
 
-        return back();
+        return back()->with('message', 'Product removed from cart!');
     }
 }

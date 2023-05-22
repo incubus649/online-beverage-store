@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductController;
 |
 */
 
+// Home routes
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
 Route::get('/about', [HomeController::class, 'about'])
@@ -37,12 +38,13 @@ Route::put('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductContro
 Route::delete('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'destroy'])
     ->name('product.destroy');
 
-
+// Show products
 Route::get('alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'show'])
     ->name('product.show');
-Route::get('alcohol/{category:slug?}/{child:slug?}', [HomeController::class, 'listings'])
+Route::get('alcohol/{category:slug?}/{child:slug?}', [ProductController::class, 'listings'])
     ->name('listings');
 
+// Cart
 Route::post('/store', [CartController::class, 'store'])
     ->name('cart.store');
 Route::post('/remove', [CartController::class, 'remove'])

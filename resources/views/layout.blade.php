@@ -10,7 +10,6 @@
         <script src="https://unpkg.com/alpinejs" defer></script>
 
     </head>
-    <x-flash-message/>
     <body >
         <header class="sticky top-0 z-10 pt-2 bg-white border-b">
             <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
@@ -80,7 +79,11 @@
         {{--VIEW OUTPUT--}}
         @yield('content')
 
+
+
         @yield('scripts')
         @livewireScripts
+        <x-flash-message />
+
     </body>
 </html>
