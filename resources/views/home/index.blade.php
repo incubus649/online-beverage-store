@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('products.layout')
 @section('content')
     <div class="flex-1 mx-auto max-w-5xl visible lg:invisible">
         @include('partials._search')

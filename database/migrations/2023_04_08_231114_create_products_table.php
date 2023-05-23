@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('slug')->nullable();
-            $table->string('image')->nullable(); 
+            $table->string('image')->nullable();
             $table->longText('description')->nullable();
             $table->string('brand');
             $table->string('country');
             $table->float('price', 11, 2);
             $table->float('size', 11, 2);
             $table->float('alcohol_vlm', 11, 2);
-            $table->integer('stock'); 
+            $table->integer('stock');
             $table->timestamps();
         });
     }

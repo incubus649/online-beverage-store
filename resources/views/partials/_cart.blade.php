@@ -92,7 +92,7 @@
                             </div>
                             <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                             <div class="mt-6">
-                                <a href="#"
+                                <a href="{{ route('order.create') }}"
                                     class="flex items-center justify-center rounded-sm border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-950">Checkout</a>
                             </div>
                             <div class="mt-6 flex justify-center text-center text-sm text-gray-500">

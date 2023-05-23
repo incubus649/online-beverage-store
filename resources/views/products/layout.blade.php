@@ -24,7 +24,7 @@
                 <ul class="flex space-x-6 mr-6 text-lg">
                     @auth
                         <li>
-                            <a id="fillBlack" href="{{ route('user.login') }}">
+                            <a id="fillBlack" href="{{ route('user.dashboard') }}">
                                 <div class="flex space-x-2">
                                     <span class="text-sm font-semibold text-gray-600 hover:text-gray-900">Welcome, <span
                                             class="uppercase">{{ auth()->user()->name }}</span></span>
@@ -118,7 +118,8 @@
         <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
             <nav class="items-center mb-12 mt-12">
                 <p class="text-center font-semibold text-sm text-gray-500">Necromancer's Nectar © 2023 </p>
-                <p class="text-center font-semibold text-sm pt-4 text-gray-400">Qualification work, PIKC Rīgas Valsts Tehnikums </p>
+                <p class="text-center font-semibold text-sm pt-4 text-gray-400">Qualification work, PIKC Rīgas Valsts
+                    Tehnikums </p>
             </nav>
     </footer>
     @yield('scripts')

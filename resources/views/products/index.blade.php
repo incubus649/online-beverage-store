@@ -1,11 +1,11 @@
-@extends('layout')
+@extends('products.layout')
 
 @section('content')
     <div class="bg-white">
         <div x-data="{ open: false }" @keydown.window.escape="open = false">
             <!--
-          Mobile filter dialog
-        -->
+              Mobile filter dialog
+            -->
             <div x-show="open" class="relative z-40 lg:hidden" style="display: none;">
                 <div x-show="open" x-transition:enter="transition-opacity ease-linear duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -106,19 +106,19 @@
 @section('scripts')
     <script>
         /*
-      function updateFilter() {
-          // Make an AJAX call to the endpoint with the selected filter and sort values
-          const formData = new FormData(document.querySelector('#product-filter-form'));
-          fetch('/products', {
-              method: 'POST',
-              body: formData
-          })
-          .then(response => response.text())
-          .then(data => {
-              // Replace the product cards container with the new filtered products view
-              document.querySelector('#product-cards-container').innerHTML = data;
-          });
-      }
-      */
+          function updateFilter() {
+              // Make an AJAX call to the endpoint with the selected filter and sort values
+              const formData = new FormData(document.querySelector('#product-filter-form'));
+              fetch('/products', {
+                  method: 'POST',
+                  body: formData
+              })
+              .then(response => response.text())
+              .then(data => {
+                  // Replace the product cards container with the new filtered products view
+                  document.querySelector('#product-cards-container').innerHTML = data;
+              });
+          }
+          */
     </script>
 @endsection

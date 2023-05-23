@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('products.layout')
 
 @section('content')
     <div class="bg-white">

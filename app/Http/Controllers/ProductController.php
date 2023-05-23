@@ -18,7 +18,7 @@ class ProductController extends Controller
         $productsAll = Product::all();
 
         $product->load('categories.parent');
-        $categories=Category::whereNull('parent_id')
+        $categories = Category::whereNull('parent_id')
             ->get();
 
         return view('products.show', compact('product', 'categories', 'productsAll'));
@@ -30,7 +30,7 @@ class ProductController extends Controller
         $categories = Category::whereNull('parent_id')
             ->get();
         $productsAll = Product::all();
-        $filter = request()->only(['search','brand', 'alcohol_vlm', 'size', 'country']);
+        $filter = request()->only(['search', 'brand', 'alcohol_vlm', 'size', 'country']);
 
         $categoryName = 'Alcohol';
         $categoryChild = Product::with('categories.parent')->pluck('id');
@@ -39,43 +39,43 @@ class ProductController extends Controller
             $categoryName = $child ? $child->name : $category->name;
             $categoryChild = $child ? Category::where('id', $child->id)->pluck('id') : Category::where('parent_id', $category->id)->pluck('id');
         }
-        
-        $brands = Product::whereHas('categories', function($query) use ($categoryChild) { 
-            $query->whereIn('category_id', $categoryChild); 
+
+        $brands = Product::whereHas('categories', function ($query) use ($categoryChild) {
+            $query->whereIn('category_id', $categoryChild);
         })
             ->filter($filter)
             ->selectRaw('brand, count(brand) as brandcount')
             ->groupByRaw('brand')
             ->orderBy('brand')
             ->get();
-        $countries = Product::whereHas('categories', function($query) use ($categoryChild) { 
-            $query->whereIn('category_id', $categoryChild); 
+        $countries = Product::whereHas('categories', function ($query) use ($categoryChild) {
+            $query->whereIn('category_id', $categoryChild);
         })
             ->filter($filter)
             ->selectRaw('country, count(country) as countrycount')
             ->groupByRaw('country')
             ->orderBy('country')
             ->get();
-        $sizes = Product::whereHas('categories', function($query) use ($categoryChild) { 
-            $query->whereIn('category_id', $categoryChild); 
+        $sizes = Product::whereHas('categories', function ($query) use ($categoryChild) {
+            $query->whereIn('category_id', $categoryChild);
         })
             ->filter($filter)
             ->selectRaw('size, count(size) as sizecount')
             ->groupByRaw('size')
             ->orderBy('size')
             ->get();
-        $alcohol_vlms = Product::whereHas('categories', function($query) use ($categoryChild) { 
-            $query->whereIn('category_id', $categoryChild); 
+        $alcohol_vlms = Product::whereHas('categories', function ($query) use ($categoryChild) {
+            $query->whereIn('category_id', $categoryChild);
         })
             ->filter($filter)
             ->selectRaw('alcohol_vlm, count(alcohol_vlm) as alcohol_vlmcount')
             ->groupByRaw('alcohol_vlm')
             ->orderBy('alcohol_vlm')
             ->get();
-        
+
         if ($category) {
-            $products = Product::whereHas('categories', function($query) use ($categoryChild) { 
-                $query->whereIn('category_id', $categoryChild); 
+            $products = Product::whereHas('categories', function ($query) use ($categoryChild) {
+                $query->whereIn('category_id', $categoryChild);
             })
                 ->with('categories.parent')
                 ->latest()
@@ -109,7 +109,7 @@ class ProductController extends Controller
     // Show product create form
     public function create()
     {
-        $categories=Category::whereNull('parent_id')
+        $categories = Category::whereNull('parent_id')
             ->get();
         $productsAll = Product::all();
 
@@ -127,20 +127,20 @@ class ProductController extends Controller
             'stock' => 'required',
             'country' => 'required',
             'size' => 'required',
-            'category' => 'required', 
+            'category' => 'required',
         ]);
 
         if (request()->has('description')) {
             $formFields['description'] = request()->str('description');
         }
 
-        if(request()->hasFile('image')){
+        if (request()->hasFile('image')) {
             $formFields['image'] = request()->file('image')->store('covers', 'public');
         }
-    
+
         // Generate slug from name
         $formFields['slug'] = Str::slug($formFields['name']);
-    
+
         // Save product
         $product = Product::create($formFields);
 
@@ -158,7 +158,7 @@ class ProductController extends Controller
     public function edit($category, $child, $product_slug, Product $product)
     {
         $product;
-        $categories=Category::whereNull('parent_id')
+        $categories = Category::whereNull('parent_id')
             ->get();
         $productsAll = Product::all();
         return view('products.edit', compact('categories', 'productsAll', 'product'));
@@ -175,20 +175,20 @@ class ProductController extends Controller
             'stock' => 'required',
             'country' => 'required',
             'size' => 'required',
-            'category' => 'required', 
+            'category' => 'required',
         ]);
 
         if (request()->has('description')) {
             $formFields['description'] = request()->str('description');
         }
 
-        if(request()->hasFile('image')){
+        if (request()->hasFile('image')) {
             $formFields['image'] = request()->file('image')->store('covers', 'public');
         }
-    
+
         // Generate slug from name
         $formFields['slug'] = Str::slug($formFields['name']);
-    
+
         // Save product
         $product->update($formFields);
 
@@ -203,7 +203,8 @@ class ProductController extends Controller
         return redirect()->route('product.show', [$category, $child, $product->slug, $product->id])->with('message', 'Product updated successfully!');
     }
 
-    public function destroy($category, $child, $product_slug, Product $product) {
+    public function destroy($category, $child, $product_slug, Product $product)
+    {
         $product->categories()->detach();
         $product->delete();
         return redirect()->route('listings', [$category, $child])->with('message', 'Product deleted successfully!');

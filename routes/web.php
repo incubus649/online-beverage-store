@@ -7,6 +7,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,10 +31,16 @@ Route::get('/contacts', [HomeController::class, 'contacts'])
 Route::get('/suppliers', [HomeController::class, 'suppliers'])
     ->name('suppliers');
 
+// Products checkout
+Route::get('/order', [OrderController::class, 'create'])
+    ->name('order.create');
+Route::post('/order/store', [OrderController::class, 'store'])
+    ->name('order.store');
+
 // Product CRUD
-Route::get('/alcohol/product/create', [ProductController::class, 'create'])
+Route::get('/alcohol/products/create', [ProductController::class, 'create'])
     ->name('product.create');
-Route::post('/alcohol', [ProductController::class, 'store'])
+Route::post('/alcohol/store', [ProductController::class, 'store'])
     ->name('product.store');
 Route::get('/alcohol/{category}/{child}/{productSlug}/{product}/edit', [ProductController::class, 'edit'])
     ->name('product.edit');
@@ -52,8 +60,10 @@ Route::post('/store', [CartController::class, 'store'])
     ->name('cart.store');
 Route::post('/remove', [CartController::class, 'remove'])
     ->name('cart.remove');
+Route::post('/clear', [CartController::class, 'clear'])
+    ->name('cart.clear');
 
-// User auth/create
+// User register
 Route::get('/register', [UserController::class, 'create'])
     ->middleware('guest')
     ->name('user.create');
@@ -61,6 +71,15 @@ Route::post('/users', [UserController::class, 'store'])
     ->middleware('guest')
     ->name('user.store');
 
+// Supplier register
+Route::get('/suppliers/register', [SupplierController::class, 'create'])
+    ->middleware('guest')
+    ->name('supplier.create');
+Route::get('/suppliers/store', [SupplierController::class, 'store'])
+    ->middleware('guest')
+    ->name('supplier.store');
+
+// User login/authenticate/logout
 Route::get('/login', [UserController::class, 'login'])
     ->middleware('guest')
     ->name('user.login');
@@ -70,3 +89,8 @@ Route::post('/users/authenticate', [UserController::class, 'authenticate'])
 Route::post('/logout', [UserController::class, 'logout'])
     ->middleware('auth')
     ->name('user.logout');
+
+// User dashboard
+Route::get('/users/dashboard', [UserController::class, 'dashboard'])
+    ->middleware('auth')
+    ->name('user.dashboard');

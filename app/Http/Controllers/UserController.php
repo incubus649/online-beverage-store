@@ -39,8 +39,7 @@ class UserController extends Controller
         return redirect('/')->with('message', 'User created and loged in!');
     }
 
-
-    // Show Register/Create user form
+    // Show login user form
     public function login()
     {
         $categories = Category::whereNull('parent_id')
@@ -75,5 +74,15 @@ class UserController extends Controller
         request()->session()->regenerateToken();
 
         return redirect('/')->with('message', 'You have been logged out!');
+    }
+
+    // Dashboard
+    public function dashboard()
+    {
+        $categories = Category::whereNull('parent_id')
+            ->get();
+        $productsAll = Product::all();
+
+        return view('users.index', compact('categories', 'productsAll'));
     }
 }

@@ -3,12 +3,12 @@
     <div class="flex min-h-full flex-col justify-center px-6 pt-12 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <img class="mx-auto h-36 w-auto" src="{{ asset('/images/small-logo.png') }}" alt="Your Company">
-            <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create new account
+            <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Become a supplier
             </h2>
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form class="space-y-6" action="{{ route('user.store') }}" method="POST">
+            <form class="space-y-6" action="{{ route('supplier.store') }}" method="POST">
                 @csrf
 
                 <div>
@@ -19,6 +19,30 @@
                             class="block w-full rounded-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                     @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="company_name" class="block text-sm font-medium leading-6 text-gray-900">Company Name</label>
+                    <div class="mt-2">
+                        <input value="{{ old('company_name') }}" id="company_name" name="company_name" type="text"
+                            autocomplete="company_name" required
+                            class="block w-full rounded-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    @error('company_name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="address" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
+                    <div class="mt-2">
+                        <input value="{{ old('address') }}" id="address" name="address" type="text"
+                            autocomplete="address" required
+                            class="block w-full rounded-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    @error('address')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

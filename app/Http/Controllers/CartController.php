@@ -19,10 +19,6 @@ class CartController extends Controller
             1,
             array(
                 'product' => $product,
-                'product_slug' => $product->slug,
-                'category_slug' => $product->categories->first()->slug,
-                'categories' => $product->categories,
-                'category' => $product->categories->first()->name
             )
         );
 
@@ -37,5 +33,12 @@ class CartController extends Controller
         Cart::remove($product->id);
 
         return back()->with('message', 'Product removed from cart!');
+    }
+
+    public function clear()
+    {
+        Cart::clear();
+
+        return back()->with('message', 'Product cart cleared!');
     }
 }

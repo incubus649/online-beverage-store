@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('products.layout')
 @section('content')
     <div class="flex min-h-full flex-col justify-center px-6 pt-12 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -11,7 +11,7 @@
             <form class="space-y-6" action="{{ route('user.authenticate') }}" method="POST">
                 @csrf
                 <div>
-                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email Address</label>
                     <div class="mt-2">
                         <input id="email" name="email" type="email" autocomplete="email" required
                             value="{{ old('email') }}"

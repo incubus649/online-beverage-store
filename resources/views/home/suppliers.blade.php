@@ -1,9 +1,9 @@
-@extends('layout')
+@extends('products.layout')
 @section('content')
     <div>
         <section class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:px-8">
             <div class="mx-auto max-w-2xl lg:max-w-4xl">
-                <a href="">
+                <a href="{{ route('supplier.create') }}">
                     <img class="mx-auto rounded-md w-full shadow-lg hover:shadow-xl"
                         src="{{ asset('images/supplier-image.png') }}" alt="Necromancer's Nectar">
                 </a>
@@ -14,7 +14,8 @@
                             customer base and be part of our growing community of beverage enthusiasts. </p>
                         <p class="pt-8">Becoming a supplier with us is a straightforward and hassle-free process. You can
                             start by
-                            filling <a href="" class="font-bold">this form</a> </p>
+                            filling <a href="{{ route('supplier.create') }}" class="font-bold hover:underline">this form</a>
+                        </p>
                     </div>
                 </figure>
             </div>
