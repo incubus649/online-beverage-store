@@ -8,9 +8,10 @@
 
             <!-- Image -->
             <div class="mx-auto mt-6 max-w-md sm:px-6 lg:px-8">
-                <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+                <div class="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg block">
                     <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('/images/small-logo.png') }}"
-                        alt="{{ $product->name }}" alt="{{ $product->name }}" class="h-full w-full object-scale-down object-center">
+                        alt="{{ $product->name }}" alt="{{ $product->name }}"
+                        class="h-full w-full object-scale-down object-center">
                 </div>
             </div>
 
@@ -26,22 +27,34 @@
                     <h2 class="sr-only">Product information</h2>
                     <p class="text-3xl tracking-tight text-gray-900">{{ number_format($product->price, 2) }}€</p>
 
+
                     <form action="{{ route('cart.store') }}" method="POST" class="mt-10">
                         @csrf
 
                         @if (!$product->stock > 0)
-                        <p class="bg-black font-semibold rounded-sm text-white text-sm p-2 text-center">OUT OF STOCK</p>
-                        <button name="product_id" value="{{ $product->id }}" type="submit" disabled
-                            class="mt-2 flex w-full items-center justify-center rounded-sm border border-transparent bg-black bg-opacity-25 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-950 focus:ring-offset-2">
-                            Add to cart
-                        </button>
+                            <p class="bg-black font-semibold rounded-sm text-white text-sm p-2 text-center">OUT OF STOCK</p>
+                            <button name="product_id" value="{{ $product->id }}" type="submit" disabled
+                                class="mt-2 flex w-full items-center justify-center rounded-sm border border-transparent bg-black bg-opacity-25 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-950 focus:ring-offset-2">
+                                Add to cart
+                            </button>
                         @else
-                        <button name="product_id" value="{{ $product->id }}" type="submit"
-                            class="mt-10 flex w-full items-center justify-center rounded-sm border border-transparent bg-black px-8 py-3 text-base font-medium text-white hover:bg-indigo-950 focus:outline-none focus:ring-2 focus:ring-indigo-950 focus:ring-offset-2">
-                            Add to cart
-                        </button>
+                            <button name="product_id" value="{{ $product->id }}" type="submit"
+                                class="mt-10 flex w-full items-center justify-center rounded-sm border border-transparent bg-black px-8 py-3 text-base font-medium text-white hover:bg-indigo-950 focus:outline-none focus:ring-2 focus:ring-indigo-950 focus:ring-offset-2">
+                                Add to cart
+                            </button>
                         @endif
                     </form>
+
+
+                    <form action="{{ route('wishlist.store') }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="mt-2 flex w-full items-center justify-center rounded-sm border border-transparent bg-black px-8 py-3 text-base font-medium text-white hover:bg-green-950 focus:outline-none focus:ring-2 focus:ring-indigo-950 focus:ring-offset-2"
+                            value="{{ $product->id }}">
+                            Add to wishlist
+                        </button>
+                    </form>
+
 
                     <div class="mt-4 p-2 border-2 border-indigo-950 rounded-md">
                         <a class="flex space-x-2"

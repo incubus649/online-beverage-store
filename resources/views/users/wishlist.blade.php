@@ -53,14 +53,19 @@
                                 </form>
                             </div>
                         </a>
+                    @endforeach
                 </dl>
-            @endforeach
             @else
-            <div class="text-3xl pt-4">
-                <p class="font-medium text-gray-900">No products in wishlist!</p>
-                <a href="{{ route('home') }}" class="text-base font-semibold text-gray-900 hover:text-indigo-900 hover:underline">Back to site?</a>
-            </div>
+                <div class="text-3xl pt-4">
+                    <p class="font-medium text-gray-900">No products in wishlist!</p>
+                </div>
             @endif
+            <div class="mt-6 flex items-center justify-end gap-x-6 xl:px-96">
+                <a href="{{ route('home') }}"
+                    class="rounded-sm bg-black px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+                    Back to shopping
+                </a>
+            </div>
         </div>
     </div>
 @endsection

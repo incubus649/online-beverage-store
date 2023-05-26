@@ -23,15 +23,25 @@
                 </div>
             </dl>
             <div class="mt-6 flex items-center justify-end gap-x-6 xl:px-96 lg:mt-96">
-                <button type="submit"
+                <a href="{{ route('user.edit') }}"
                     class="rounded-sm bg-black px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Update user information
-                </button>
+                </a>
 
-                <button type="submit"
+                <a href="{{ route('password.edit') }}"
                     class="rounded-sm bg-black px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Change password
-                </button>
+                </a>
+            </div>
+            <div class="mt-6 flex items-center justify-end gap-x-6 xl:px-96">
+                <form method="POST" action="{{ route('user.destroy', [auth()->user()]) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="rounded-sm bg-red-900 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+                        Delete account
+                    </button>
+                </form>
             </div>
         </div>
     </div>

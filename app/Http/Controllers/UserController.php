@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -74,6 +75,56 @@ class UserController extends Controller
         request()->session()->regenerateToken();
 
         return redirect('/')->with('message', 'You have been logged out!');
+    }
+
+    // Show user edit form
+    public function edit()
+    {
+        return view('users.edit');
+    }
+
+    // Update user information
+    public function update(User $user)
+    {
+        $formFields = request()->validate([
+            'name' => ['required', 'min:3'],
+            'email' => 'unique:users,email,' . $user->id,
+        ]);
+
+        $user->update($formFields);
+
+        return redirect()->route('user.dashboard')->with('message', 'Yout information has been updated!');
+    }
+
+    // Show user password edit form
+    public function passwordEdit()
+    {
+        return view('users.password-edit');
+    }
+
+    // Store user password edit form
+    public function passwordUpdate(User $user)
+    {
+        request()->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        if (!Hash::check(request()->input('current_password'), $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'The current password is incorrect!']);
+        }
+
+        $user->password = bcrypt(request()->input('password'));
+        $user->save();
+
+        return redirect()->route('user.dashboard')->with('message', 'Password updated successfully!');
+    }
+
+    // Update user information
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('home')->with('message', 'User deleted successfully!');
     }
 
     // Dashboard

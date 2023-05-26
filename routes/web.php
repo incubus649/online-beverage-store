@@ -40,14 +40,18 @@ Route::post('/order/store', [OrderController::class, 'store'])
 
 // Product CRUD
 Route::get('/alcohol/products/create', [ProductController::class, 'create'])
+    ->middleware('auth')
     ->name('product.create');
 Route::post('/alcohol/store', [ProductController::class, 'store'])
     ->name('product.store');
 Route::get('/alcohol/{category}/{child}/{productSlug}/{product}/edit', [ProductController::class, 'edit'])
+    ->middleware('auth')
     ->name('product.edit');
 Route::put('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'update'])
+    ->middleware('auth')
     ->name('product.update');
 Route::delete('/alcohol/{category}/{child}/{productSlug}/{product}', [ProductController::class, 'destroy'])
+    ->middleware('auth')
     ->name('product.destroy');
 
 // Show products
@@ -90,6 +94,25 @@ Route::post('/users/authenticate', [UserController::class, 'authenticate'])
 Route::post('/logout', [UserController::class, 'logout'])
     ->middleware('auth')
     ->name('user.logout');
+
+// User update/delete
+Route::get('/users/edit', [UserController::class, 'edit'])
+    ->middleware('auth')
+    ->name('user.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])
+    ->middleware('auth')
+    ->name('user.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('user.destroy');
+
+// User password update
+Route::get('/users/password/edit', [UserController::class, 'passwordEdit'])
+    ->middleware('auth')
+    ->name('password.edit');
+Route::put('/users/password/{user}', [UserController::class, 'passwordUpdate'])
+    ->middleware('auth')
+    ->name('password.update');
 
 // User dashboard
 Route::get('/users/dashboard', [UserController::class, 'dashboard'])

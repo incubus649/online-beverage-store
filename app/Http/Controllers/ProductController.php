@@ -207,7 +207,6 @@ class ProductController extends Controller
 
     public function destroy($category, $child, $product_slug, Product $product)
     {
-        $product->categories()->detach();
         $product->delete();
         return redirect()->route('listings', [$category, $child])->with('message', 'Product deleted successfully!');
     }

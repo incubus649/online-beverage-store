@@ -35,6 +35,10 @@ class SupplierController extends Controller
         // Hash password
         $formFields['password'] = bcrypt($formFields['password']);
         $formFields['is_supplier'] = true;
+
+        if (request()->hasFile('logo')) {
+            $formFields['logo'] = request()->file('logo')->store('logos', 'public');
+        }
         
         $user = User::create($formFields);
         auth()->login($user);
