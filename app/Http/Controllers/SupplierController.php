@@ -34,9 +34,8 @@ class SupplierController extends Controller
 
         // Hash password
         $formFields['password'] = bcrypt($formFields['password']);
-
-
-        dd($formFields['is_supplier']);
+        $formFields['is_supplier'] = true;
+        
         $user = User::create($formFields);
         auth()->login($user);
 

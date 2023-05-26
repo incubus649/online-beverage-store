@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <header class="sticky top-0 z-10 pt-2 bg-white border-b">
+    <header class="sticky top-0 z-20 pt-2 bg-white border-b">
         <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
             <nav class="flex justify-between items-center mb-4">
                 <a href="{{ route('home') }}"><img class="w-72" src="{{ asset('images/logo.png') }}" alt=""
@@ -35,9 +35,7 @@
                                     </svg>
                                 </div>
                             </a>
-                        </li>
 
-                        <li>
                             <form method="POST" action="{{ route('user.logout') }}">
                                 @csrf
                                 <button class="flex space-x-2" id="fillBlack" type="submit">
@@ -66,7 +64,7 @@
                     @endauth
 
                     <li id="fillBlack">
-                        <a href="{{ route('home') }}">
+                        <a href="{{ route('wishlist.index') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"

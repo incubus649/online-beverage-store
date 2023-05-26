@@ -12,7 +12,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'brand', 'country', 'price', 'size', 'alcohol_vlm', 'stock', 'image', 'description'];
+    protected $fillable = ['name', 'slug', 'brand', 'country', 'price', 'size', 'alcohol_vlm', 'stock', 'image', 'description', 'user_id'];
 
     public function scopeFilter($query, array $filters)
     {
@@ -42,8 +42,18 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class)->withPivot('quantity');
+    }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 }

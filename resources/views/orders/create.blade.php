@@ -22,7 +22,8 @@
                                 <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                     @foreach ($productsAll->where('id', $item->id) as $product)
                                         <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('/images/small-logo.png') }}"
-                                            alt="{{ $product->name }}" class="h-full w-full object-cover object-center">
+                                            alt="{{ $product->name }}"
+                                            class="h-full w-full object-scale-down object-center">
                                     @endforeach
                                 </div>
 
@@ -93,7 +94,31 @@
 
                                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     @auth
-                                        <div class="sm:col-span-4 mt-12"></div>
+                                        <div class="sm:col-span-4">
+                                            <label for="name"
+                                                class="block text-sm font-medium leading-6 text-gray-900">Name</label>
+                                            <div class="mt-2">
+                                                <input id="name" name="name" type="text" autocomplete="name"
+                                                    value="{{ auth()->user()->name }}"
+                                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            </div>
+                                            @error('name')
+                                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+
+                                        <div class="sm:col-span-4">
+                                            <label for="email"
+                                                class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                                            <div class="mt-2">
+                                                <input id="email" name="email" type="email" autocomplete="email"
+                                                    value="{{ auth()->user()->email }}"
+                                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            </div>
+                                            @error('email')
+                                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                     @else
                                         <div class="sm:col-span-4">
                                             <label for="name"
@@ -126,8 +151,8 @@
                                             class="block text-sm font-medium leading-6 text-gray-900">Street
                                             address</label>
                                         <div class="mt-2">
-                                            <input type="text" name="street" id="street" value="{{ old('street') }}"
-                                                autocomplete="street-address"
+                                            <input type="text" name="street" id="street"
+                                                value="{{ old('street') }}" autocomplete="street-address"
                                                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                         @error('street')

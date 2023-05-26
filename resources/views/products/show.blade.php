@@ -10,7 +10,7 @@
             <div class="mx-auto mt-6 max-w-md sm:px-6 lg:px-8">
                 <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                     <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('/images/small-logo.png') }}"
-                        alt="{{ $product->name }}" alt="{{ $product->name }}" class="h-full w-full object-cover object-center">
+                        alt="{{ $product->name }}" alt="{{ $product->name }}" class="h-full w-full object-scale-down object-center">
                 </div>
             </div>
 
@@ -28,10 +28,19 @@
 
                     <form action="{{ route('cart.store') }}" method="POST" class="mt-10">
                         @csrf
+
+                        @if (!$product->stock > 0)
+                        <p class="bg-black font-semibold rounded-sm text-white text-sm p-2 text-center">OUT OF STOCK</p>
+                        <button name="product_id" value="{{ $product->id }}" type="submit" disabled
+                            class="mt-2 flex w-full items-center justify-center rounded-sm border border-transparent bg-black bg-opacity-25 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-950 focus:ring-offset-2">
+                            Add to cart
+                        </button>
+                        @else
                         <button name="product_id" value="{{ $product->id }}" type="submit"
                             class="mt-10 flex w-full items-center justify-center rounded-sm border border-transparent bg-black px-8 py-3 text-base font-medium text-white hover:bg-indigo-950 focus:outline-none focus:ring-2 focus:ring-indigo-950 focus:ring-offset-2">
                             Add to cart
                         </button>
+                        @endif
                     </form>
 
                     <div class="mt-4 p-2 border-2 border-indigo-950 rounded-md">
@@ -91,10 +100,10 @@
                                 </li>
                                 <li class="text-gray-600"><span class="text-gray-700">Country: </span>
                                     {{ $product->country }}</li>
-                                <li class="text-gray-600"><span class="text-gray-700">Size: </span> {{ $product->size }}
+                                <li class="text-gray-600"><span class="text-gray-700">Size: </span> {{ $product->size }}L
                                 </li>
                                 <li class="text-gray-600"><span class="text-gray-700">Alcohol ABV: </span>
-                                    {{ $product->alcohol_vlm }}</li>
+                                    {{ $product->alcohol_vlm }}%</li>
                                 <li class="text-gray-600"><span class="text-gray-700">Stock: </span> {{ $product->stock }}
                                 </li>
                             </ul>

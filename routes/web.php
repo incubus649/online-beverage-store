@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,7 @@ Route::get('/contacts', [HomeController::class, 'contacts'])
 Route::get('/suppliers', [HomeController::class, 'suppliers'])
     ->name('suppliers');
 
-// Products checkout
+// Products order
 Route::get('/order', [OrderController::class, 'create'])
     ->name('order.create');
 Route::post('/order/store', [OrderController::class, 'store'])
@@ -94,3 +95,17 @@ Route::post('/logout', [UserController::class, 'logout'])
 Route::get('/users/dashboard', [UserController::class, 'dashboard'])
     ->middleware('auth')
     ->name('user.dashboard');
+Route::get('/users/orders', [OrderController::class, 'index'])
+    ->middleware('auth')
+    ->name('user.orders');
+
+// User wishlist
+Route::get('/users/wishlist', [WishlistController::class, 'index'])
+    ->middleware('auth')
+    ->name('wishlist.index');
+Route::post('/users/wishlist/store', [WishlistController::class, 'store'])
+    ->middleware('auth')
+    ->name('wishlist.store');
+Route::post('/users/wishlist/clear', [WishlistController::class, 'clear'])
+    ->middleware('auth')
+    ->name('wishlist.clear');

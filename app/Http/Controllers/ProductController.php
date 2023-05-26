@@ -130,6 +130,8 @@ class ProductController extends Controller
             'category' => 'required',
         ]);
 
+        $formFields['user_id'] = auth()->user()->id;
+
         if (request()->has('description')) {
             $formFields['description'] = request()->str('description');
         }

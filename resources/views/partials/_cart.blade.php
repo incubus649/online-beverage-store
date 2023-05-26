@@ -39,7 +39,7 @@
                                                     @foreach ($productsAll->where('id', $item->id) as $product)
                                                         <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('/images/small-logo.png') }}"
                                                             alt="{{ $product->name }}"
-                                                            class="h-full w-full object-cover object-center">
+                                                            class="h-full w-full object-scale-down object-center">
                                                     @endforeach
                                                 </div>
 

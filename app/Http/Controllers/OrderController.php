@@ -21,6 +21,19 @@ class OrderController extends Controller
         return view('orders.create', compact('categories', 'productsAll'));
     }
 
+    // Show user orders
+    public function index()
+    {
+        $categories = Category::whereNull('parent_id')
+            ->get();
+        $productsAll = Product::all();
+
+        $orders = Order::latest()
+            ->get();
+
+        return view('users.orders', compact('categories', 'productsAll', 'orders'));
+    }
+
     // Store order form
     public function store()
     {
@@ -29,15 +42,13 @@ class OrderController extends Controller
             return redirect()->back()->with('message', 'Cart is empty! Try again!');
         }
 
+        $formFields = request()->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email'],
+        ]);
 
-        if (!auth()->user()) {
-            $formFields = request()->validate([
-                'name' => ['required', 'min:3'],
-                'email' => ['required', 'email'],
-            ]);
-        } else {
-            $formFields['name'] = auth()->user()->name;
-            $formFields['email'] = auth()->user()->email;
+        if (auth()->user()) {
+            $formFields['user_id'] = auth()->user()->id;
         }
 
         request()->validate([
@@ -48,6 +59,7 @@ class OrderController extends Controller
         ]);
 
         $formFields['address'] = $country . ', ' . $city . ', ' . $street . ', ' . $postal_code;
+        $formFields['subtotal'] = Cart::getSubTotal();
 
         $order = Order::create($formFields);
 
@@ -55,15 +67,13 @@ class OrderController extends Controller
 
         foreach (Cart::getContent() as $item) {
             foreach ($products->where('id', $item->id) as $product) {
-                // Validate if the requested quantity is available in stock
+
                 if ($product->stock < $item->quantity) {
-                    // Handle insufficient stock error
                     return redirect()->back()->with('message', 'Insufficient stock');
                 }
 
                 $order->products()->attach($product, ['quantity' => $item->quantity]);
 
-                // Update and save the stock value
                 $product->stock -= $item->quantity;
                 $product->save();
             }

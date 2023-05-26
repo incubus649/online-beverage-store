@@ -11,7 +11,7 @@
         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 translate-y-1"
         x-description="Flyout menu, show/hide based on flyout menu state."
-        class="absolute left-1/2 z-10 mt-2 flex w-screen max-w-max -translate-x-1/2 px-4" style="display: none;"
+        class="absolute left-1/2 z-20 mt-2 flex w-screen max-w-max -translate-x-1/2 px-4" style="display: none;"
         @click.away="open = false">
         <div
             class="w-screen lg:max-w-4xl flex-auto overflow-hidden rounded-sm bg-white text-base leading-6 shadow-lg ring-1 ring-gray-900/5">
