@@ -56,7 +56,7 @@
                         @include('partials._search')
                     </div>
                     <div class="flex items-center">
-                        <x-product-sort />
+                        <x-product-sort :category="$category" :child="$child"/>
 
                         <button type="button" class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
                             @click="open = true">

@@ -79,31 +79,25 @@ class ProductController extends Controller
             })
                 ->with('categories.parent')
                 ->latest()
-                ->filter($filter)
-                ->paginate(16);
+                ->filter($filter);
         } else {
 
             $products = Product::with('categories.parent')
                 ->latest()
-                ->filter($filter)
-                ->paginate(16);
+                ->filter($filter);
         }
 
         if (request()->sort == 'newest') {
-            $products = $products
-                ->latest()
-                ->paginate(16);
+            $products = $products->latest();
         } else if (request()->sort == 'high-to-low') {
-            $products = $products
-                ->sortByDesc('price')
-                ->paginate(16);
+            $products = $products->orderByPrice('desc');
         } else if (request()->sort == 'low-to-high') {
-            $products = $products
-                ->sortBy('price')
-                ->paginate(16);
+            $products = $products->orderByPrice('asc');
         }
 
-        return view('products.index', compact('products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName', 'productsAll'));
+        $products = $products->paginate(16);
+
+        return view('products.index', compact('category', 'child', 'products', 'categories', 'brands', 'countries', 'sizes', 'alcohol_vlms', 'categoryName', 'productsAll'));
     }
 
     // Show product create form
@@ -218,7 +212,7 @@ class ProductController extends Controller
         if (!auth()->user()->is_admin && $product->user_id != auth()->user()->id) {
             abort('403', 'Unauthorized Action!');
         }
-        
+
         $product->delete();
         return redirect()->route('listings', [$category, $child])->with('message', 'Product deleted successfully!');
     }

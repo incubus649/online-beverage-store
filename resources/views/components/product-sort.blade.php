@@ -1,3 +1,5 @@
+@props(['category', 'child'])
+
 <div x-data="{ openSort: false }" x-init="init()" @keydown.escape.stop="openSort = false; focusButton()"
     class="relative inline-block text-left">
     <div>
@@ -19,23 +21,23 @@
         x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
-        class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="absolute right-0 z-20 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
         x-description="Dropdown menu, show/hide based on menu state." style="display: none;">
         <div x-data="{ selected: 'menu-item-1' }" class="py-1" role="none">
-            <a href="{{ route('listings', ['sort' => 'newest']) }}" class="text-gray-500 block px-4 py-2 text-sm"
-                role="menuitem" tabindex="-1" id="menu-item-1" x-on:click.prevent="selected = 'menu-item-1'"
+            <a href="{{ route('listings', ['sort' => 'newest', $category, $child]) }}" class="text-gray-500 block px-4 py-2 text-sm"
+                role="menuitem" tabindex="-1" id="menu-item-1" 
                 x-bind:class="{ 'bg-gray-100': selected === 'menu-item-1', 'text-gray-800 font-medium': selected ===
                     'menu-item-1', 'text-gray-500': selected !== 'menu-item-1' }">
                 Newest
             </a>
-            <a href="{{ route('listings', ['sort' => 'low-to-high']) }}" class="text-gray-500 block px-4 py-2 text-sm"
-                role="menuitem" tabindex="-1" id="menu-item-2" x-on:click.prevent="selected = 'menu-item-2'"
+            <a href="{{ route('listings', ['sort' => 'low-to-high', $category, $child]) }}" class="text-gray-500 block px-4 py-2 text-sm"
+                role="menuitem" tabindex="-1" id="menu-item-2" 
                 x-bind:class="{ 'bg-gray-100': selected === 'menu-item-2', 'text-gray-800 font-medium': selected ===
                     'menu-item-2', 'text-gray-500': selected !== 'menu-item-2' }">
                 Price: Low to High
             </a>
-            <a href="{{ route('listings', ['sort' => 'high-to-low']) }}" class="text-gray-500 block px-4 py-2 text-sm"
-                role="menuitem" tabindex="-1" id="menu-item-3" x-on:click.prevent="selected = 'menu-item-3'"
+            <a href="{{ route('listings', ['sort' => 'high-to-low', $category, $child]) }}" class="text-gray-500 block px-4 py-2 text-sm"
+                role="menuitem" tabindex="-1" id="menu-item-3" 
                 x-bind:class="{ 'bg-gray-100': selected === 'menu-item-3', 'text-gray-800 font-medium': selected ===
                     'menu-item-3', 'text-gray-500': selected !== 'menu-item-3' }">
                 Price: High to Low

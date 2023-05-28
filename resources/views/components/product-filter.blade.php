@@ -35,12 +35,13 @@
                 @endphp
                 <div class="flex items-center">
                     @if (is_numeric($firstAttribute))
-                        <input id="{{ $firstAttribute }}" name="{{ $filterName }}[]"
+                        <input id="{{ $firstAttribute }}" name="{{ $filterName }}" onChange="this.form.submit()"
                             value="{{ number_format($firstAttribute, 2) }}" type="checkbox"
                             class="h-4 w-4 rounded border-gray-300 text-black focus:ring-gray-800">
                     @else
-                        <input id="{{ $firstAttribute }}" name="{{ $filterName }}[]" value="{{ $firstAttribute }}"
-                            type="checkbox" class="h-4 w-4 rounded border-gray-300 text-black focus:ring-gray-800">
+                        <input id="{{ $firstAttribute }}" name="{{ $filterName }}" value="{{ $firstAttribute }}"
+                            onChange="this.form.submit()" type="checkbox"
+                            class="h-4 w-4 rounded border-gray-300 text-black focus:ring-gray-800">
                     @endif
 
                     <label for="{{ $firstAttribute }}" class="ml-3 text-sm text-gray-600">

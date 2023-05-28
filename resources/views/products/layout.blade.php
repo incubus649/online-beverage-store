@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
-    @livewireStyles
     <title>Necromancer Nectar</title>
     <script src="https://unpkg.com/alpinejs" defer></script>
 
 </head>
 
 <body>
-    <header class="sticky top-0 z-20 pt-2 bg-white border-b">
+    <header class="sticky top-0 z-30 pt-2 bg-white border-b">
         <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
             <nav class="flex justify-between items-center mb-4">
                 <a href="{{ route('home') }}"><img class="w-72" src="{{ asset('images/logo.png') }}" alt=""
@@ -185,7 +184,6 @@
             </nav>
     </footer>
     @yield('scripts')
-    @livewireScripts
     <x-flash-message />
 
 </body>

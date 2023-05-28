@@ -35,6 +35,12 @@ class Product extends Model
         if ($filters['country'] ?? false) {
             $query->where('country', 'like', '%' . request('country') . '%');
         }
+        
+    }
+
+    public function scopeOrderByPrice($query, $direction = 'asc')
+    {
+        return $query->orderBy('price', $direction);
     }
 
     public function categories()
