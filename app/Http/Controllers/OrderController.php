@@ -14,6 +14,16 @@ class OrderController extends Controller
     // Show order form
     public function create()
     {
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back()->with('message', 'Orders cannot be placed for supliers!');
+            }
+
+            if (auth()->user()->is_admin) {
+                return back()->with('message', 'Orders cannot be placed for admins!');
+            }
+        }
+
         $categories = Category::whereNull('parent_id')
             ->get();
         $productsAll = Product::all();
@@ -21,15 +31,33 @@ class OrderController extends Controller
         return view('orders.create', compact('categories', 'productsAll'));
     }
 
-    // Show user orders
+    // Show orders
     public function index()
     {
         $categories = Category::whereNull('parent_id')
             ->get();
         $productsAll = Product::all();
 
-        $orders = Order::latest()
-            ->get();
+        $orders = Order::latest()->paginate(20);
+
+        if (auth()->user()->is_supplier) {
+            $orders_arr = [];
+
+            foreach ($orders as $order) {
+                foreach ($order->products->where('user_id', auth()->user()->id) as $product) {
+                    array_push($orders_arr, $product->pivot->order_id);
+                }
+            }
+
+            $orders = Order::whereIn('id', $orders_arr);
+            $orders = $orders->paginate(20);
+
+            return view('suppliers.orders', compact('categories', 'productsAll', 'orders'));
+        }
+
+        if (auth()->user()->is_admin) {
+            return view('admins.orders', compact('categories', 'productsAll', 'orders'));
+        }
 
         return view('users.orders', compact('categories', 'productsAll', 'orders'));
     }
@@ -37,7 +65,16 @@ class OrderController extends Controller
     // Store order form
     public function store()
     {
-        // Validate if there are products in cart
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back()->with('message', 'Orders cannot be placed for supliers!');
+            }
+
+            if (auth()->user()->is_admin) {
+                return back()->with('message', 'Orders cannot be placed for admins!');
+            }
+        }
+
         if (Cart::isEmpty()) {
             return redirect()->back()->with('message', 'Cart is empty! Try again!');
         }

@@ -15,6 +15,16 @@ class WishlistController extends Controller
     // Show wishlist
     public function index()
     {
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back();
+            }
+
+            if (auth()->user()->is_admin) {
+                return back();
+            }
+        }
+
         $wishlist = Wishlist::where('user_id', auth()->user()->id)->latest()->get();
 
         return view('users.wishlist', compact('wishlist'));
@@ -23,6 +33,16 @@ class WishlistController extends Controller
     // Store user create form
     public function store()
     {
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back()->with('message', 'Wishlist is unavailable for suppliers!');
+            }
+
+            if (auth()->user()->is_admin) {
+                return back()->with('message', 'Wishlist is unavailable for admins!');
+            }
+        }
+
         $product = Product::findOrFail(request()->input('product_id'));
 
         // Check if the product is already in the user's wishlist
@@ -43,6 +63,16 @@ class WishlistController extends Controller
 
     public function clear()
     {
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back();
+            }
+
+            if (auth()->user()->is_admin) {
+                return back();
+            }
+        }
+
         $product = request()->input('product_id');
 
         Wishlist::where('user_id', auth()->user()->id)->where('product_id', $product)->delete();

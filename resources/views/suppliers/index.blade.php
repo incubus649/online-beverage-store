@@ -13,6 +13,23 @@
                     <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ auth()->user()->name }}</dd>
                 </div>
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">Company name</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        {{ auth()->user()->company_name }}</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">Company logo</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <img src="{{ auth()->user()->logo ? asset('storage/' . auth()->user()->logo) : asset('/images/logo.png') }}"
+                            alt="{{ auth()->user()->company_name }}" class="h-36 w-36 object-scale-down">
+                    </dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">Company address</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ auth()->user()->address }}
+                    </dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
                     <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ auth()->user()->email }}</dd>
                 </div>
@@ -22,10 +39,10 @@
                     </dd>
                 </div>
             </dl>
-            <div class="mt-6 flex items-center justify-end gap-x-6 xl:px-96 lg:mt-96">
-                <a href="{{ route('user.edit', [auth()->user()]) }}"
+            <div class="mt-6 flex items-center justify-end gap-x-6 xl:px-96">
+                <a href="{{ route('supplier.edit', [auth()->user()]) }}"
                     class="rounded-sm bg-black px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Update user information
+                    Update supplier information
                 </a>
 
                 <a href="{{ route('password.edit', [auth()->user()]) }}"

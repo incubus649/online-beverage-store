@@ -39,10 +39,25 @@ class SupplierController extends Controller
         if (request()->hasFile('logo')) {
             $formFields['logo'] = request()->file('logo')->store('logos', 'public');
         }
-        
+
         $user = User::create($formFields);
         auth()->login($user);
 
         return redirect('/')->with('message', 'Company created and loged in!');
+    }
+
+    // Dashboard
+    public function dashboard()
+    {
+        return view('suppliers.index');
+    }
+
+    // Show supplier edit form
+    public function edit(User $user)
+    {
+        if (!auth()->user()->is_admin && auth()->user()->id != $user->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+        return view('suppliers.edit', compact('user'));
     }
 }

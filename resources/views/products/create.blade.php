@@ -1,7 +1,7 @@
-@extends('products.layout')
+@extends('users.layout')
 
 @section('content')
-    <form method="POST" action="{{ route('product.store') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('category.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="px-6 py-24 xl:px-96 space-y-12">
@@ -188,7 +188,7 @@
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6 xl:px-96 mb-12">
-            <a href="{{ route('listings') }}" type="button"
+            <a href="{{ route('supplier.dashboard') }}" type="button"
                 class="text-sm font-semibold leading-6 text-gray-900">Cancel</a>
             <button type="submit"
                 class="rounded-sm bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>

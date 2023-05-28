@@ -78,14 +78,56 @@ class UserController extends Controller
     }
 
     // Show user edit form
-    public function edit()
+    public function edit(User $user)
     {
-        return view('users.edit');
+        if (!auth()->user()->is_admin && auth()->user()->id != $user->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+
+        if ($user->is_admin) {
+            if (auth()->user()->id != $user->id) {
+                abort('403', 'Unauthorized Action!');
+            }
+        }
+
+        return view('users.edit', compact('user'));
     }
 
     // Update user information
     public function update(User $user)
     {
+        if (!auth()->user()->is_admin && auth()->user()->id != $user->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+
+        if ($user->is_admin) {
+            if (auth()->user()->id != $user->id) {
+                abort('403', 'Unauthorized Action!');
+            }
+        }
+
+        if ($user->is_supplier) {
+
+            $formFields = request()->validate([
+                'name' => ['required', 'min:3'],
+                'email' => 'unique:users,email,' . $user->id,
+                'company_name' => 'unique:users,company_name,' . $user->id,
+                'address' => 'required',
+            ]);
+
+            $user->update($formFields);
+
+            if (request()->hasFile('logo')) {
+                $formFields['logo'] = request()->file('logo')->store('logos', 'public');
+            }
+
+            if (auth()->user()->is_admin) {
+                return redirect()->route('admin.users')->with('message', 'Supplier information has been updated!');
+            }
+
+            return redirect()->route('supplier.dashboard', compact('user'))->with('message', 'Your information has been updated!');
+        }
+
         $formFields = request()->validate([
             'name' => ['required', 'min:3'],
             'email' => 'unique:users,email,' . $user->id,
@@ -93,18 +135,33 @@ class UserController extends Controller
 
         $user->update($formFields);
 
-        return redirect()->route('user.dashboard')->with('message', 'Yout information has been updated!');
+        if (auth()->user()->is_admin) {
+            if ($user->is_admin) {
+                return redirect()->route('admin.dashboard')->with('message', 'Your information has been updated!');
+            }
+            return redirect()->route('admin.users')->with('message', 'User information has been updated!');
+        }
+
+        return redirect()->route('user.dashboard')->with('message', 'Your information has been updated!');
     }
 
     // Show user password edit form
-    public function passwordEdit()
+    public function passwordEdit(User $user)
     {
+        if (auth()->user()->id != $user->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+
         return view('users.password-edit');
     }
 
     // Store user password edit form
     public function passwordUpdate(User $user)
     {
+        if (auth()->user()->id != $user->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+
         request()->validate([
             'current_password' => 'required',
             'password' => 'required|min:6|confirmed',
@@ -117,23 +174,44 @@ class UserController extends Controller
         $user->password = bcrypt(request()->input('password'));
         $user->save();
 
+        if ($user->is_admin) {
+            return redirect()->route('admin.dashboard')->with('message', 'Password updated successfully!');
+        }
+
+        if (auth()->user()->is_supplier) {
+            return redirect()->route('supplier.dashboard')->with('message', 'Password updated successfully!');
+        }
+
+        if (auth()->user()->is_admin) {
+            return redirect()->route('admin.users')->with('message', 'Accounts password updated successfully!');
+        }
+
         return redirect()->route('user.dashboard')->with('message', 'Password updated successfully!');
     }
 
     // Update user information
     public function destroy(User $user)
     {
+        $user->orders()->update(['user_id' => null]);
         $user->delete();
+
+        if (auth()->user()->is_admin && !$user->is_admin) {
+            return redirect()->route('admin.users')->with('message', 'User deleted successfully!');
+        }
         return redirect()->route('home')->with('message', 'User deleted successfully!');
     }
 
     // Dashboard
     public function dashboard()
     {
-        $categories = Category::whereNull('parent_id')
-            ->get();
-        $productsAll = Product::all();
+        if (auth()->user()->is_supplier) {
+            return redirect()->route('supplier.dashboard');
+        }
 
-        return view('users.index', compact('categories', 'productsAll'));
+        if (auth()->user()->is_admin) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return view('users.index');
     }
 }

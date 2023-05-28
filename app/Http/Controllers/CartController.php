@@ -10,6 +10,16 @@ class CartController extends Controller
     // Store products to shopping cart
     public function store()
     {
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back()->with('message', 'Cart is unavailable for suppliers!');
+            }
+
+            if (auth()->user()->is_admin) {
+                return back()->with('message', 'Cart is unavailable for admins!');
+            }
+        }
+
         $product = Product::findOrFail(request()->input('product_id'));
 
         Cart::add(
@@ -25,9 +35,19 @@ class CartController extends Controller
         return back()->with('message', 'Product added to cart!');
     }
 
-    // Remove products from shopping cartS
+    // Remove products from shopping cart
     public function remove()
     {
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back();
+            }
+
+            if (auth()->user()->is_admin) {
+                return back();
+            }
+        }
+
         $product = Product::findOrFail(request()->input('product_id'));
 
         Cart::remove($product->id);
@@ -37,6 +57,16 @@ class CartController extends Controller
 
     public function clear()
     {
+        if (auth()->user()) {
+            if (auth()->user()->is_supplier) {
+                return back();
+            }
+
+            if (auth()->user()->is_admin) {
+                return back();
+            }
+        }
+
         Cart::clear();
 
         return back()->with('message', 'Product cart cleared!');

@@ -159,6 +159,10 @@ class ProductController extends Controller
     // Show product edit form
     public function edit($category, $child, $product_slug, Product $product)
     {
+        if (!auth()->user()->is_admin && $product->user_id != auth()->user()->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+
         $product;
         $categories = Category::whereNull('parent_id')
             ->get();
@@ -169,6 +173,10 @@ class ProductController extends Controller
     // Update product edit form
     public function update($category, $child, $product_slug, Product $product)
     {
+        if (!auth()->user()->is_admin && $product->user_id != auth()->user()->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+
         $formFields = request()->validate([
             'name' => 'required',
             'price' => 'required',
@@ -207,7 +215,28 @@ class ProductController extends Controller
 
     public function destroy($category, $child, $product_slug, Product $product)
     {
+        if (!auth()->user()->is_admin && $product->user_id != auth()->user()->id) {
+            abort('403', 'Unauthorized Action!');
+        }
+        
         $product->delete();
         return redirect()->route('listings', [$category, $child])->with('message', 'Product deleted successfully!');
+    }
+
+    public function manage()
+    {
+        if (!auth()->user()->is_admin && !auth()->user()->is_supplier) {
+            abort('403', 'Unauthorized Action!');
+        }
+
+        if (auth()->user()->is_admin) {
+            $products = Product::all();
+            return view('admins.manage', compact('products'));
+        }
+
+        if (auth()->user()->is_supplier) {
+            $products = auth()->user()->products;
+            return view('suppliers.manage', compact('products'));
+        }
     }
 }

@@ -69,17 +69,51 @@
                                     </h2>
                                 </div>
                                 <div class="relative mt-12 flex-1 px-4 sm:px-6">
-
                                     <ul class="text-left border-t text-base font-semibold text-gray-500">
-                                        <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
-                                            <a href="{{ route('user.dashboard') }}">Dashboard</a>
-                                        </li>
-                                        <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
-                                            <a href="{{ route('user.orders') }}">Orders</a>
-                                        </li>
-                                        <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
-                                            <a href="{{ route('wishlist.index') }}">Wishlist</a>
-                                        </li>
+                                        @if (auth()->user()->is_admin)
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('admin.users') }}">Users</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('admin.manage') }}">Products</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('admin.categories') }}">Categories</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('admin.orders') }}">Orders</a>
+                                            </li>
+
+                                        @elseif(auth()->user()->is_supplier)
+
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('supplier.dashboard') }}">Dashboard</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('supplier.orders') }}">Orders</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('supplier.manage') }}">Products</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('product.create') }}">Add new product</a>
+                                            </li>
+
+                                        @else
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('user.dashboard') }}">Dashboard</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('user.orders') }}">Orders</a>
+                                            </li>
+                                            <li class="block border-b pt-4 pb-4 pr-48 hover:text-gray-700">
+                                                <a href="{{ route('wishlist.index') }}">Wishlist</a>
+                                            </li>
+
+                                        @endif
                                     </ul>
                                 </div>
 

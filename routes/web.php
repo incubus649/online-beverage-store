@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WishlistController;
 
@@ -40,9 +42,10 @@ Route::post('/order/store', [OrderController::class, 'store'])
 
 // Product CRUD
 Route::get('/alcohol/products/create', [ProductController::class, 'create'])
-    ->middleware('auth')
+    ->middleware('is_supplier')
     ->name('product.create');
 Route::post('/alcohol/store', [ProductController::class, 'store'])
+    ->middleware('is_supplier')
     ->name('product.store');
 Route::get('/alcohol/{category}/{child}/{productSlug}/{product}/edit', [ProductController::class, 'edit'])
     ->middleware('auth')
@@ -76,14 +79,6 @@ Route::post('/users', [UserController::class, 'store'])
     ->middleware('guest')
     ->name('user.store');
 
-// Supplier register
-Route::get('/suppliers/register', [SupplierController::class, 'create'])
-    ->middleware('guest')
-    ->name('supplier.create');
-Route::get('/suppliers/store', [SupplierController::class, 'store'])
-    ->middleware('guest')
-    ->name('supplier.store');
-
 // User login/authenticate/logout
 Route::get('/login', [UserController::class, 'login'])
     ->middleware('guest')
@@ -96,7 +91,7 @@ Route::post('/logout', [UserController::class, 'logout'])
     ->name('user.logout');
 
 // User update/delete
-Route::get('/users/edit', [UserController::class, 'edit'])
+Route::get('/users/edit/{user}', [UserController::class, 'edit'])
     ->middleware('auth')
     ->name('user.edit');
 Route::put('/users/{user}', [UserController::class, 'update'])
@@ -107,10 +102,10 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])
     ->name('user.destroy');
 
 // User password update
-Route::get('/users/password/edit', [UserController::class, 'passwordEdit'])
+Route::get('/password/edit/{user}', [UserController::class, 'passwordEdit'])
     ->middleware('auth')
     ->name('password.edit');
-Route::put('/users/password/{user}', [UserController::class, 'passwordUpdate'])
+Route::put('/password/{user}', [UserController::class, 'passwordUpdate'])
     ->middleware('auth')
     ->name('password.update');
 
@@ -132,3 +127,58 @@ Route::post('/users/wishlist/store', [WishlistController::class, 'store'])
 Route::post('/users/wishlist/clear', [WishlistController::class, 'clear'])
     ->middleware('auth')
     ->name('wishlist.clear');
+
+// Supplier register
+Route::get('/suppliers/register', [SupplierController::class, 'create'])
+    ->middleware('guest')
+    ->name('supplier.create');
+Route::post('/suppliers/store', [SupplierController::class, 'store'])
+    ->middleware('guest')
+    ->name('supplier.store');
+
+// Suppliers dashboard
+Route::get('/suppliers/dashboard', [SupplierController::class, 'dashboard'])
+    ->middleware('is_supplier')
+    ->name('supplier.dashboard');
+Route::get('/suppliers/orders', [OrderController::class, 'index'])
+    ->middleware('is_supplier')
+    ->name('supplier.orders');
+Route::get('/suppliers/edit/{user}', [SupplierController::class, 'edit'])
+    ->middleware('auth')
+    ->name('supplier.edit');
+Route::get('/suppliers/manage', [ProductController::class, 'manage'])
+    ->middleware('is_supplier')
+    ->name('supplier.manage');
+
+// Admins dashboard
+Route::get('/admins/dashboard', [AdminController::class, 'dashboard'])
+    ->middleware('is_admin')
+    ->name('admin.dashboard');
+Route::get('/admins/users', [AdminController::class, 'users'])
+    ->middleware('is_admin')
+    ->name('admin.users');
+Route::get('/admins/orders', [OrderController::class, 'index'])
+    ->middleware('is_admin')
+    ->name('admin.orders');
+Route::get('/admins/manage', [ProductController::class, 'manage'])
+    ->middleware('is_admin')
+    ->name('admin.manage');
+
+Route::get('/admins/categories', [CategoryController::class, 'manage'])
+    ->middleware('is_admin')
+    ->name('admin.categories');
+Route::get('/admins/create', [CategoryController::class, 'create'])
+    ->middleware('is_admin')
+    ->name('category.create');
+Route::get('/admins/{category}/edit', [CategoryController::class, 'edit'])
+    ->middleware('is_admin')
+    ->name('category.edit');
+Route::post('/admins/store', [CategoryController::class, 'store'])
+    ->middleware('is_admin')
+    ->name('category.store');
+Route::put('/admins/{category}/update', [CategoryController::class, 'update'])
+    ->middleware('is_admin')
+    ->name('category.update');
+Route::delete('/admins/{category}/destroy', [CategoryController::class, 'destroy'])
+    ->middleware('is_admin')
+    ->name('category.destroy');
