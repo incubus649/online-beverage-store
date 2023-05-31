@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class CategoryController extends Controller
@@ -31,7 +32,7 @@ class CategoryController extends Controller
     public function store()
     {
         $formFields = request()->validate([
-            'name' => 'required',
+            'name' => 'required', Rule::unique('categories', 'name'),
         ]);
 
         if (request()->has('parent_id')) {
@@ -60,7 +61,7 @@ class CategoryController extends Controller
     public function update(Category $category)
     {
         $formFields = request()->validate([
-            'name' => 'required',
+            'name' => 'unique:categories,name,' . $category->id,
         ]);
 
         if (request()->has('parent_id')) {

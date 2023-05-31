@@ -124,6 +124,22 @@ class ProductController extends Controller
             'category' => 'required',
         ]);
 
+        if (!is_int(request()->input('stock'))) {
+            return redirect()->back()->withErrors(['stock' => 'The stock is incorrect type of data!']);
+        }
+
+        if (!is_numeric(request()->input('price'))) {
+            return redirect()->back()->withErrors(['price' => 'The price is incorrect type of data!']);
+        }
+
+        if (!is_numeric(request()->input('size'))) {
+            return redirect()->back()->withErrors(['size' => 'The size is incorrect type of data!']);
+        }
+
+        if (!is_numeric(request()->input('alcohol_vlm'))) {
+            return redirect()->back()->withErrors(['alcohol_vlm' => 'The alcohol volume is incorrect type of data!']);
+        }
+
         $formFields['user_id'] = auth()->user()->id;
 
         if (request()->has('description')) {
@@ -181,6 +197,22 @@ class ProductController extends Controller
             'size' => 'required',
             'category' => 'required',
         ]);
+
+        if (!is_int(request()->input('stock'))) {
+            return redirect()->back()->withErrors(['stock' => 'The stock is incorrect type of data!']);
+        }
+
+        if (!is_numeric(request()->input('price'))) {
+            return redirect()->back()->withErrors(['price' => 'The price is incorrect type of data!']);
+        }
+
+        if (!is_numeric(request()->input('size'))) {
+            return redirect()->back()->withErrors(['size' => 'The size is incorrect type of data!']);
+        }
+
+        if (!is_numeric(request()->input('alcohol_vlm'))) {
+            return redirect()->back()->withErrors(['alcohol_vlm' => 'The alcohol volume is incorrect type of data!']);
+        }
 
         if (request()->has('description')) {
             $formFields['description'] = request()->str('description');
