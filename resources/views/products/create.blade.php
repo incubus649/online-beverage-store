@@ -1,7 +1,7 @@
 @extends('users.layout')
 
 @section('content')
-    <form method="POST" action="{{ route('category.store') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('product.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="px-6 py-24 xl:px-96 space-y-12">

@@ -213,6 +213,7 @@ class ProductController extends Controller
             abort('403', 'Unauthorized Action!');
         }
 
+        $product->categories()->detach();
         $product->delete();
         return redirect()->route('listings', [$category, $child])->with('message', 'Product deleted successfully!');
     }
