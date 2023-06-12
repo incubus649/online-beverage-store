@@ -15,7 +15,7 @@ class ProductController extends Controller
     // Show single product
     public function show($category, $child, $product_slug, Product $product)
     {
-        $productsAll = Product::all();
+        $productsAll = Product::latest()->get();
 
         $product->load('categories.parent');
         $categories = Category::whereNull('parent_id')
@@ -78,21 +78,21 @@ class ProductController extends Controller
                 $query->whereIn('category_id', $categoryChild);
             })
                 ->with('categories.parent')
-                ->latest()
                 ->filter($filter);
         } else {
 
             $products = Product::with('categories.parent')
-                ->latest()
                 ->filter($filter);
         }
 
+
+
         if (request()->sort == 'newest') {
-            $products = $products->latest();
+            $products->latest();
         } else if (request()->sort == 'high-to-low') {
-            $products = $products->orderByPrice('desc');
+            $products->orderByPrice('desc');
         } else if (request()->sort == 'low-to-high') {
-            $products = $products->orderByPrice('asc');
+            $products->orderByPrice('asc');
         }
 
         $products = $products->paginate(16);
@@ -124,7 +124,7 @@ class ProductController extends Controller
             'category' => 'required',
         ]);
 
-        if (!is_int(request()->input('stock'))) {
+        if (!is_numeric(request()->input('stock'))) {
             return redirect()->back()->withErrors(['stock' => 'The stock is incorrect type of data!']);
         }
 
@@ -198,7 +198,7 @@ class ProductController extends Controller
             'category' => 'required',
         ]);
 
-        if (!is_int(request()->input('stock'))) {
+        if (!is_numeric(request()->input('stock'))) {
             return redirect()->back()->withErrors(['stock' => 'The stock is incorrect type of data!']);
         }
 
