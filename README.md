@@ -16,6 +16,7 @@ The project utilizes the following technologies: Laravel 10.4.1, PHP 8.1, HTML5,
 * PHP documentation - https://www.php.net/manual/en/
 * AlpineJS documentation - https://alpinejs.dev/start-here/
 * Implementation of the shopping cart - https://github.com/darryldecode/laravelshoppingcart/
+* TailwindCSS templates - https://tailwindui.com/
 
 ## Installation instructions
 The system has two launch modes: user-side and administrator-side.
