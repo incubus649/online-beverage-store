@@ -17,8 +17,3 @@ The project utilizes the following technologies: Laravel 10.4.1, PHP 8.1, HTML5,
 * AlpineJS documentation - https://alpinejs.dev/start-here/
 * Implementation of the shopping cart - https://github.com/darryldecode/laravelshoppingcart/
 * TailwindCSS templates - https://tailwindui.com/
-
-## Installation instructions
-The system has two launch modes: user-side and administrator-side.
-For the user-side launch, simply visit the website like any other page. Enter the website URL (necromancersnectar.id.lv) in the address bar of your web browser. Once the link is entered, you can freely browse the page and interact with the website.
-For the administrator-side launch, the system prepares the website's functionality, making it accessible to users, suppliers, and the administrator themselves.
